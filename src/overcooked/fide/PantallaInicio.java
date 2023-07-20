@@ -4,8 +4,15 @@
  */
 package overcooked.fide;
 
+import java.io.IOException;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,15 +23,19 @@ public class PantallaInicio extends javax.swing.JFrame {
     /**
      * Creates new form PantallaInicio
      */
+    
+    private Clip cancion;
+    
     public PantallaInicio() {
         initComponents();
+        activarCancionInicio();
+        
         // Setear posición a la pantalla
         setLocationRelativeTo(null);
         setResizable(false);
         
         //Se crea un objeto Icon con la libreria Icon, se le pasa la posición 
         //del label 
-        
         Icon icon = new ImageIcon(new ImageIcon
         (getClass().getResource("overcookedheader.png")).getImage().getScaledInstance
         (lblImageHeader.getWidth(), lblImageHeader.getHeight(), 
@@ -34,6 +45,37 @@ public class PantallaInicio extends javax.swing.JFrame {
         lblImageHeader.setIcon(icon);
     }
 
+    
+    public void activarCancionInicio(){
+        
+        // Se activa la cancion de Inicio con la libreria javax sound sampled
+        try{
+            //Se crea el objeto clip
+            cancion = AudioSystem.getClip();
+            //Obtener el archivo
+            cancion.open(AudioSystem.getAudioInputStream(getClass()
+                    .getResourceAsStream("FeidNormal.wav")));
+            
+            // Se setea el volumen del clip con el objeto FloatControl
+            FloatControl Controlador = (FloatControl) cancion.getControl
+            (FloatControl.Type.MASTER_GAIN);
+            Controlador.setValue(-30.0f);
+
+            //Iniciar el clip
+            cancion.start();
+
+            //Se repita 100 veces
+            cancion.loop(100);
+            
+        }catch(IOException | LineUnavailableException | 
+               UnsupportedAudioFileException e){   
+            
+            JOptionPane.showMessageDialog
+                                    (null,e.getMessage());
+        }
+ 
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
