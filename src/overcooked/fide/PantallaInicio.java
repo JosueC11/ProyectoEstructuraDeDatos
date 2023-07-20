@@ -45,36 +45,14 @@ public class PantallaInicio extends javax.swing.JFrame {
         lblImageHeader.setIcon(icon);
     }
 
-    
-    public void activarCancionInicio(){
-        
-        // Se activa la cancion de Inicio con la libreria javax sound sampled
-        try{
-            //Se crea el objeto clip
-            cancion = AudioSystem.getClip();
-            //Obtener el archivo
-            cancion.open(AudioSystem.getAudioInputStream(getClass()
-                    .getResourceAsStream("FeidNormal.wav")));
-            
-            // Se setea el volumen del clip con el objeto FloatControl
-            FloatControl Controlador = (FloatControl) cancion.getControl
-            (FloatControl.Type.MASTER_GAIN);
-            Controlador.setValue(-30.0f);
-
-            //Iniciar el clip
-            cancion.start();
-
-            //Se repita 100 veces
-            cancion.loop(100);
-            
-        }catch(IOException | LineUnavailableException | 
-               UnsupportedAudioFileException e){   
-            
-            JOptionPane.showMessageDialog
-                                    (null,e.getMessage());
+    public void activarCancionInicio() 
+    {
+        Reproductor_Musica reproductor = Reproductor_Musica.getInstance();
+        if (!reproductor.reproduciendo) 
+        {
+            Thread hiloMusica = new Thread(reproductor);
+            hiloMusica.start();
         }
- 
-        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -94,12 +72,27 @@ public class PantallaInicio extends javax.swing.JFrame {
 
         btnPuntuaciones.setBackground(new java.awt.Color(0, 153, 153));
         btnPuntuaciones.setText("Puntuaciones");
+        btnPuntuaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPuntuacionesActionPerformed(evt);
+            }
+        });
 
         btnJugar.setBackground(new java.awt.Color(0, 153, 153));
         btnJugar.setText("Jugar");
+        btnJugar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnJugarActionPerformed(evt);
+            }
+        });
 
         btnSalir.setBackground(new java.awt.Color(255, 0, 51));
         btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -135,6 +128,26 @@ public class PantallaInicio extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        JOptionPane.showMessageDialog(null,"Muchas gracias por jugar!","Saliendo....",JOptionPane.INFORMATION_MESSAGE);
+        
+        this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void btnPuntuacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPuntuacionesActionPerformed
+        Puntuaciones mostrar_puntuaciones = new Puntuaciones(); 
+        mostrar_puntuaciones.setVisible(true); 
+        mostrar_puntuaciones.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_btnPuntuacionesActionPerformed
+
+    private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
+        Juego mostrar_juego = new Juego(); 
+        mostrar_juego.setVisible(true); 
+        mostrar_juego.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_btnJugarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -165,7 +178,7 @@ public class PantallaInicio extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PantallaInicio().setVisible(true);
+                new PantallaInicio().setVisible(true);            
             }
         });
     }
