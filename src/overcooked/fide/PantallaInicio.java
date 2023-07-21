@@ -4,12 +4,6 @@
  */
 package overcooked.fide;
 
-import java.io.IOException;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -24,28 +18,19 @@ public class PantallaInicio extends javax.swing.JFrame {
      * Creates new form PantallaInicio
      */
     
-    private Clip cancion;
+    private boolean inicioSesion;
     
     public PantallaInicio() {
         initComponents();
         activarCancionInicio();
+        activarImagenes();
         
         // Setear posición a la pantalla
         setLocationRelativeTo(null);
-        setResizable(false);
-        
-        //Se crea un objeto Icon con la libreria Icon, se le pasa la posición 
-        //del label 
-        Icon icon = new ImageIcon(new ImageIcon
-        (getClass().getResource("overcookedheader.png")).getImage().getScaledInstance
-        (lblImageHeader.getWidth(), lblImageHeader.getHeight(), 
-        0));
-       
-        // Se le setea el Icon a el label
-        lblImageHeader.setIcon(icon);
+        setResizable(false);    
     }
 
-    public void activarCancionInicio() 
+    public final void activarCancionInicio() 
     {
         Reproductor_Musica reproductor = Reproductor_Musica.getInstance();
         if (!reproductor.reproduciendo) 
@@ -54,6 +39,43 @@ public class PantallaInicio extends javax.swing.JFrame {
             hiloMusica.start();
         }
     }
+    
+    public final void activarImagenes(){
+
+        //Se crea un objeto Icon con la libreria Icon, se le pasa la posición 
+        //del label 
+        Icon header = new ImageIcon(new ImageIcon
+        (getClass().getResource("overcookedheader.png")).getImage().getScaledInstance
+        (lblImageHeader.getWidth(), lblImageHeader.getHeight(), 
+        0));
+       
+        // Se le setea el Icon a el label
+        lblImageHeader.setIcon(header);
+        
+        Icon user = new ImageIcon(new ImageIcon
+        (getClass().getResource("user.png")).getImage().getScaledInstance
+        (lblImageUser.getWidth(), lblImageUser.getHeight(), 
+        0));
+
+        lblImageUser.setIcon(user);    
+        
+        Icon manPlayer = new ImageIcon(new ImageIcon
+        (getClass().getResource("manPLayer.png")).getImage().getScaledInstance
+        (lblImageUser.getWidth(), lblImageUser.getHeight(), 
+        0));
+       
+        // Se le setea el Icon a el label
+        lblImageUser.setIcon(manPlayer); 
+    }
+    
+    public boolean isInicioSesion() {
+        return inicioSesion;
+    }
+
+    public void setInicioSesion(boolean inicioSesion) {
+        this.inicioSesion = inicioSesion;
+    }
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,6 +89,9 @@ public class PantallaInicio extends javax.swing.JFrame {
         btnPuntuaciones = new javax.swing.JButton();
         btnJugar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        lblImageUser = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,6 +119,20 @@ public class PantallaInicio extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setBackground(new java.awt.Color(0, 153, 153));
+        jButton1.setText("Iniciar Sesión");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setBackground(new java.awt.Color(0, 153, 153));
+        jButton2.setText("Registrarse");
+
+        lblImageUser.setBackground(new java.awt.Color(255, 153, 153));
+        lblImageUser.setForeground(new java.awt.Color(255, 153, 153));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -101,26 +140,46 @@ public class PantallaInicio extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lblImageHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 1041, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(btnPuntuaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(349, 349, 349)
-                .addComponent(btnJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(btnPuntuaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(349, 349, 349)
+                        .addComponent(btnJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(151, 151, 151)
+                        .addComponent(lblImageUser, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lblImageHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnPuntuaciones)
-                    .addComponent(btnJugar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(lblImageUser, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnPuntuaciones)
+                                    .addComponent(btnJugar)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(jButton1)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addGap(40, 40, 40)))
                 .addComponent(btnSalir)
                 .addContainerGap())
         );
@@ -147,6 +206,12 @@ public class PantallaInicio extends javax.swing.JFrame {
         mostrar_juego.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_btnJugarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        InicioSesion  inicioSesion = new InicioSesion();
+        inicioSesion.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -187,6 +252,9 @@ public class PantallaInicio extends javax.swing.JFrame {
     private javax.swing.JButton btnJugar;
     private javax.swing.JButton btnPuntuaciones;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel lblImageHeader;
+    private javax.swing.JLabel lblImageUser;
     // End of variables declaration//GEN-END:variables
 }
