@@ -18,8 +18,8 @@ public class PantallaInicio extends javax.swing.JFrame {
      * Creates new form PantallaInicio
      */
     
-    private boolean inicioSesion;
-    
+    Jugador jugador = new Jugador();
+
     public PantallaInicio() {
         initComponents();
         activarCancionInicio();
@@ -27,7 +27,11 @@ public class PantallaInicio extends javax.swing.JFrame {
         
         // Setear posición a la pantalla
         setLocationRelativeTo(null);
-        setResizable(false);    
+        setResizable(false);   
+        
+        grupoGenero.add(f);
+        grupoGenero.add(m);
+    
     }
 
     public final void activarCancionInicio() 
@@ -52,30 +56,84 @@ public class PantallaInicio extends javax.swing.JFrame {
         // Se le setea el Icon a el label
         lblImageHeader.setIcon(header);
         
-        Icon user = new ImageIcon(new ImageIcon
-        (getClass().getResource("user.png")).getImage().getScaledInstance
-        (lblImageUser.getWidth(), lblImageUser.getHeight(), 
-        0));
-
-        lblImageUser.setIcon(user);    
+        if(jugador.getIdentificado() == null){
+            
+            Icon user = new ImageIcon(new ImageIcon
+            (getClass().getResource("user.png")).getImage().getScaledInstance
+            (lblImageUser.getWidth(), lblImageUser.getHeight(), 
+            0));
+            
+            lblImageUser.setIcon(user); 
+   
+        }else{
+            
+            actualizarImagenes();
         
-        Icon manPlayer = new ImageIcon(new ImageIcon
-        (getClass().getResource("manPLayer.png")).getImage().getScaledInstance
-        (lblImageUser.getWidth(), lblImageUser.getHeight(), 
-        0));
-       
-        // Se le setea el Icon a el label
-        lblImageUser.setIcon(manPlayer); 
+        } 
     }
     
-    public boolean isInicioSesion() {
-        return inicioSesion;
+    public void actualizarImagenes(){
+        
+        String genero = jugador.getGenero();
+
+        if(genero != null && genero.equalsIgnoreCase("M")){
+            
+           Icon manPlayer = new ImageIcon(new ImageIcon
+            (getClass().getResource("manPlayer.png")).getImage().getScaledInstance
+            (lblImageUser.getWidth(), lblImageUser.getHeight(), 
+            0)); 
+           
+           lblImageUser.setIcon(manPlayer);  
+           
+        }else if(genero != null && genero.equalsIgnoreCase("F")){
+            
+            Icon womanPlayer = new ImageIcon(new ImageIcon
+            (getClass().getResource("womanPlayer.png")).getImage().getScaledInstance
+            (lblImageUser.getWidth(), lblImageUser.getHeight(), 
+            0));
+            
+            lblImageUser.setIcon(womanPlayer);  
+            
+        }  
+    }
+    
+    public void iniciarSesion(){
+
+        if(!txtNombre.getText().isEmpty()){
+            
+            if(m.isSelected() || f.isSelected()){
+                
+                jugador.setNombre(txtNombre.getText());
+                jugador.setIdentificado(true);
+                
+                if(m.isSelected()){
+                    
+                    jugador.setGenero("M"); 
+                }else{
+                    
+                    jugador.setGenero("F"); 
+                }
+                JOptionPane.showMessageDialog
+                (null,"Guardado Correctamente");
+                
+                actualizarImagenes();
+                
+            }else{
+                
+                JOptionPane.showMessageDialog
+            (null,"Debe llenar el campo de "
+                            + "genero para continuar");
+                
+            }
+        }else{
+            
+            JOptionPane.showMessageDialog
+            (null,"Debe llenar el campo de nombre "
+                            + " para continuar");
+        
+        } 
     }
 
-    public void setInicioSesion(boolean inicioSesion) {
-        this.inicioSesion = inicioSesion;
-    }
-  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -85,13 +143,17 @@ public class PantallaInicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        grupoGenero = new javax.swing.ButtonGroup();
         lblImageHeader = new javax.swing.JLabel();
         btnPuntuaciones = new javax.swing.JButton();
         btnJugar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         lblImageUser = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        m = new javax.swing.JRadioButton();
+        f = new javax.swing.JRadioButton();
+        btnGuardar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,19 +181,26 @@ public class PantallaInicio extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(0, 153, 153));
-        jButton1.setText("Iniciar Sesión");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        lblImageUser.setBackground(new java.awt.Color(255, 153, 153));
+        lblImageUser.setForeground(new java.awt.Color(255, 153, 153));
+
+        jLabel1.setText("Nombre:");
+
+        m.setText("M");
+
+        f.setText("F");
+        f.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                fActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(0, 153, 153));
-        jButton2.setText("Registrarse");
-
-        lblImageUser.setBackground(new java.awt.Color(255, 153, 153));
-        lblImageUser.setForeground(new java.awt.Color(255, 153, 153));
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -141,22 +210,30 @@ public class PantallaInicio extends javax.swing.JFrame {
                 .addComponent(lblImageHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 1041, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnPuntuaciones, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(btnPuntuaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(349, 349, 349)
                         .addComponent(btnJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(151, 151, 151)
-                        .addComponent(lblImageUser, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(30, 30, 30))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(m)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnGuardar)
+                                    .addComponent(f))))
+                        .addGap(30, 30, 30))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblImageUser, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,24 +241,27 @@ public class PantallaInicio extends javax.swing.JFrame {
                 .addComponent(lblImageHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(lblImageUser, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnPuntuaciones)
-                                    .addComponent(btnJugar)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addComponent(jButton1)))
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnPuntuaciones)
+                            .addComponent(btnJugar))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addGap(40, 40, 40)))
-                .addComponent(btnSalir)
-                .addContainerGap())
+                        .addComponent(btnSalir)
+                        .addGap(22, 22, 22))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(m)
+                            .addComponent(f))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnGuardar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblImageUser, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 28, Short.MAX_VALUE))))
         );
 
         pack();
@@ -201,17 +281,28 @@ public class PantallaInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPuntuacionesActionPerformed
 
     private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
-        Juego mostrar_juego = new Juego(); 
-        mostrar_juego.setVisible(true); 
-        mostrar_juego.setLocationRelativeTo(null);
-        this.dispose();
+        
+        if(jugador.getIdentificado() == null){
+            
+            JOptionPane.showMessageDialog
+            (null,"Debe Identificarse antes de jugar");
+        
+        }else{
+            
+            Juego mostrar_juego = new Juego(); 
+            mostrar_juego.setVisible(true); 
+            mostrar_juego.setLocationRelativeTo(null);
+            this.dispose();
+        }
     }//GEN-LAST:event_btnJugarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        InicioSesion  inicioSesion = new InicioSesion();
-        inicioSesion.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void fActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        iniciarSesion();        
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -249,12 +340,16 @@ public class PantallaInicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnJugar;
     private javax.swing.JButton btnPuntuaciones;
     private javax.swing.JButton btnSalir;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JRadioButton f;
+    private javax.swing.ButtonGroup grupoGenero;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblImageHeader;
     private javax.swing.JLabel lblImageUser;
+    private javax.swing.JRadioButton m;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }
