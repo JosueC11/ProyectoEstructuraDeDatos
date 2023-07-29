@@ -18,9 +18,14 @@ public class PantallaInicio extends javax.swing.JFrame {
      * Creates new form PantallaInicio
      */
     
-    Jugador jugador = new Jugador();
+    // Hacemos get de la instancia del Jugador
+    // Se cambió por el get porque el new lo que hacía era crear un objeto nuevo cada vez que se devolvía al menú
+    // por eso se borraban los datos del jugador ggwp
+    
+    Jugador jugador = Jugador.getInstance();
 
-    public PantallaInicio() {
+    public PantallaInicio() 
+    {
         initComponents();
         activarCancionInicio();
         activarImagenes();
@@ -31,6 +36,19 @@ public class PantallaInicio extends javax.swing.JFrame {
         
         grupoGenero.add(f);
         grupoGenero.add(m);
+
+        // Mostrar los datos del jugador en los campos correspondientes cada vez que se devuelva al menú
+        txtNombre.setText(jugador.getNombre());
+        if (jugador.getGenero() != null) {
+            if (jugador.getGenero().equalsIgnoreCase("M")) 
+            {
+                m.setSelected(true);
+            } 
+            else if (jugador.getGenero().equalsIgnoreCase("F")) 
+            {
+                f.setSelected(true);
+            }
+        }
     
     }
 

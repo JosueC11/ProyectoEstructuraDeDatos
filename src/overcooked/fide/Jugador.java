@@ -14,8 +14,23 @@ public class Jugador {
     private String genero;
     private Boolean identificado;
 
-    public Jugador() {
+    //Se crea una instancia estática del jugador para llamarlo cuando sea necesario
+    private static Jugador jugadorInstance = null;
+    
+    private Jugador() 
+    {
        
+    }
+
+    // Se crea el metodo para llamar al usuario registrado
+    
+    public static Jugador getInstance() 
+    {
+        if (jugadorInstance == null) 
+        {
+            jugadorInstance = new Jugador();
+        }
+        return jugadorInstance;
     }
 
     public String getNombre() {
