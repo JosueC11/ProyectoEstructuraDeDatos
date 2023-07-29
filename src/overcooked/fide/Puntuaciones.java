@@ -1,16 +1,27 @@
+
 package overcooked.fide;
 
-/**
- *
- * @author Dennis
- */
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
+//jTable_puntuaciones
 public class Puntuaciones extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Puntuaciones
-     */
-    public Puntuaciones() {
+    DefaultTableModel modeloListado;
+    String[] info = new String[2];
+    
+    public Puntuaciones() 
+    {
         initComponents();
+        setLocationRelativeTo(null);
+        setResizable(false);
+        modeloListado = new DefaultTableModel();
+        modeloListado.addColumn("Jugador");
+        modeloListado.addColumn("Puntuación");
+        this.jTable_puntuaciones.setModel(modeloListado);
+
+        // Mostrar el ArrayList al inicializar la ventana Puntuaciones
+        mostrarPuntuaciones(Juego.arrPuntuaciones);
     }
 
     /**
@@ -26,7 +37,7 @@ public class Puntuaciones extends javax.swing.JFrame {
         jList1 = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable_puntuaciones = new javax.swing.JTable();
         salirMenuPrincipal_Puntuaciones = new javax.swing.JButton();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
@@ -41,7 +52,7 @@ public class Puntuaciones extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("Puntuaciones");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable_puntuaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -52,7 +63,7 @@ public class Puntuaciones extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(jTable_puntuaciones);
 
         salirMenuPrincipal_Puntuaciones.setText("Salir al menú");
         salirMenuPrincipal_Puntuaciones.addActionListener(new java.awt.event.ActionListener() {
@@ -99,9 +110,34 @@ public class Puntuaciones extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_salirMenuPrincipal_PuntuacionesActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    
+    public void mostrarPuntuaciones(ArrayList<Puntuacion> arrPuntuaciones) 
+    {
+        int n = arrPuntuaciones.size();
+        for (int i = 0; i < n - 1; i++) 
+        {
+            for (int j = 0; j < n - i - 1; j++)
+            {
+                if (arrPuntuaciones.get(j).getPuntuacionJugador() < arrPuntuaciones.get(j + 1).getPuntuacionJugador()) 
+                {
+                    // Intercambiar las puntuaciones si están en el orden incorrecto
+                    Puntuacion temp = arrPuntuaciones.get(j);
+                    arrPuntuaciones.set(j, arrPuntuaciones.get(j + 1));
+                    arrPuntuaciones.set(j + 1, temp);
+                }
+            }
+        }
+
+        modeloListado.setRowCount(0);
+        for (Puntuacion puntuacion : arrPuntuaciones) 
+        {
+            String[] info = new String[2];
+            info[0] = puntuacion.getJugador().getNombre();
+            info[1] = String.valueOf(puntuacion.getPuntuacionJugador());
+            modeloListado.addRow(info);
+        }
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -139,7 +175,7 @@ public class Puntuaciones extends javax.swing.JFrame {
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable_puntuaciones;
     private javax.swing.JButton salirMenuPrincipal_Puntuaciones;
     // End of variables declaration//GEN-END:variables
 }

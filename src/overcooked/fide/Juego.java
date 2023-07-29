@@ -1,18 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package overcooked.fide;
 
-/**
- *
- * @author Dennis
- */
+import java.util.ArrayList;
+
+
 public class Juego extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Juego
-     */
+    public static ArrayList<Puntuacion> arrPuntuaciones = new ArrayList<>();
+    
     Jugador jugador = Jugador.getInstance();
     
     public Juego() 
@@ -32,17 +27,17 @@ public class Juego extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         salirMenuPrincipal_Juego = new javax.swing.JButton();
         campo_nombre = new javax.swing.JLabel();
         nombre_jugador = new javax.swing.JTextField();
+        spiner_puntuacion = new javax.swing.JSpinner();
+        txt_puntuacion = new javax.swing.JLabel();
+        enviar_puntuacion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("Juego");
-
-        jLabel2.setText("Hola");
 
         salirMenuPrincipal_Juego.setText("Salir al menú");
         salirMenuPrincipal_Juego.addActionListener(new java.awt.event.ActionListener() {
@@ -59,26 +54,41 @@ public class Juego extends javax.swing.JFrame {
             }
         });
 
+        txt_puntuacion.setText("Puntuacion");
+
+        enviar_puntuacion.setText("Enviar");
+        enviar_puntuacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enviar_puntuacionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(221, 221, 221)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(183, 183, 183)
-                        .addComponent(salirMenuPrincipal_Juego)))
+                .addGap(183, 183, 183)
+                .addComponent(salirMenuPrincipal_Juego)
                 .addContainerGap(197, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(campo_nombre)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nombre_jugador, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(enviar_puntuacion))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(campo_nombre)
+                                .addGap(25, 25, 25)
+                                .addComponent(nombre_jugador, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txt_puntuacion)
+                                .addGap(70, 70, 70)
+                                .addComponent(spiner_puntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(12, 12, 12))
         );
         layout.setVerticalGroup(
@@ -89,9 +99,13 @@ public class Juego extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(campo_nombre)
                     .addComponent(nombre_jugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(91, 91, 91)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spiner_puntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_puntuacion))
+                .addGap(18, 18, 18)
+                .addComponent(enviar_puntuacion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
                 .addComponent(salirMenuPrincipal_Juego)
                 .addGap(19, 19, 19))
         );
@@ -109,6 +123,17 @@ public class Juego extends javax.swing.JFrame {
     private void nombre_jugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombre_jugadorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_nombre_jugadorActionPerformed
+
+    private void enviar_puntuacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviar_puntuacionActionPerformed
+
+        int puntuacion = (int) spiner_puntuacion.getValue();
+
+        Puntuacion nuevaPuntuacion = new Puntuacion(puntuacion, jugador);
+
+        arrPuntuaciones.add(nuevaPuntuacion);
+        
+        spiner_puntuacion.setValue(0);
+    }//GEN-LAST:event_enviar_puntuacionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -147,9 +172,13 @@ public class Juego extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel campo_nombre;
+    private javax.swing.JButton enviar_puntuacion;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField nombre_jugador;
     private javax.swing.JButton salirMenuPrincipal_Juego;
+    private javax.swing.JSpinner spiner_puntuacion;
+    private javax.swing.JLabel txt_puntuacion;
     // End of variables declaration//GEN-END:variables
 }
+
+
