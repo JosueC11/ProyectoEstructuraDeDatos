@@ -15,6 +15,7 @@ public class NodoCola{
 
     public NodoCola(Orden orden) {
         this.orden = orden;
+        this.atras = null;
     }
 
     public Orden getOrden() {
