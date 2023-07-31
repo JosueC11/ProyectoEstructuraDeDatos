@@ -1,7 +1,10 @@
 
 package overcooked.fide;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.Timer;
 
 
 public class Juego extends javax.swing.JFrame {
@@ -10,11 +13,88 @@ public class Juego extends javax.swing.JFrame {
     
     Jugador jugador = Jugador.getInstance();
     
-    public Juego() 
-    {
+    ListaOrdenes lista = new ListaOrdenes();
+
+    private Timer tiempo;
+    
+    private int centesima = 99, segundo = 19;
+    
+    private ActionListener accion = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            
+            centesima --;
+            lista.llenarLista();
+            lista.agregarOrdenCola();
+            generarOrdenInicio();
+            if(centesima == 0){
+                
+                segundo --;
+                centesima = 99;
+            }
+            if(segundo == -1){
+                
+                lista.agregarOrdenCola();
+                generarOrden();
+                centesima = 99;
+                segundo = 19;     
+            }  
+        }   
+    };
+    
+    public Juego(){
+        
         initComponents();
         
         nombre_jugador.setText(jugador.getNombre());
+        
+        tiempo = new Timer(1,accion);
+        tiempo.start();  
+    }
+    
+    public void generarOrdenInicio(){
+        
+        int inicio = 0;
+        if(inicio == 0){
+            
+            Orden orden = lista.devolver();
+            
+            if (TxtPaneOrden1.getText().isEmpty() && 
+                TxtPaneOrden2.getText().isEmpty() && 
+                TxtPaneOrden3.getText().isEmpty()){
+
+                TxtPaneOrden1.setText(orden.getNombre());
+            }
+            inicio ++;        
+        }
+    }
+    
+    public void generarOrden(){
+        
+        if (segundo == -1) {
+
+            Orden orden = lista.devolver();
+
+            if (TxtPaneOrden1.getText().isEmpty() && 
+                TxtPaneOrden2.getText().isEmpty() && 
+                TxtPaneOrden3.getText().isEmpty()) {
+
+                TxtPaneOrden1.setText(orden.getNombre());
+                
+
+            } else if (!TxtPaneOrden1.getText().isEmpty() && 
+                        TxtPaneOrden2.getText().isEmpty() && 
+                        TxtPaneOrden3.getText().isEmpty()){
+
+                TxtPaneOrden2.setText(orden.getNombre());
+
+            } else if (!TxtPaneOrden1.getText().isEmpty() && 
+                       !TxtPaneOrden2.getText().isEmpty() && 
+                       TxtPaneOrden3.getText().isEmpty()){
+
+                TxtPaneOrden3.setText(orden.getNombre());
+            }
+        }
     }
 
     /**
@@ -33,6 +113,13 @@ public class Juego extends javax.swing.JFrame {
         spiner_puntuacion = new javax.swing.JSpinner();
         txt_puntuacion = new javax.swing.JLabel();
         enviar_puntuacion = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TxtPaneOrden3 = new javax.swing.JTextPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        TxtPaneOrden2 = new javax.swing.JTextPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        TxtPaneOrden1 = new javax.swing.JTextPane();
+        btnTerminarOrden = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,51 +150,90 @@ public class Juego extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane1.setViewportView(TxtPaneOrden3);
+
+        jScrollPane2.setViewportView(TxtPaneOrden2);
+
+        jScrollPane3.setViewportView(TxtPaneOrden1);
+
+        btnTerminarOrden.setText("Terminar Orden");
+        btnTerminarOrden.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTerminarOrdenActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(183, 183, 183)
-                .addComponent(salirMenuPrincipal_Juego)
-                .addContainerGap(197, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(enviar_puntuacion))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(salirMenuPrincipal_Juego)
+                        .addGap(111, 111, 111))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(campo_nombre)
-                                .addGap(25, 25, 25)
-                                .addComponent(nombre_jugador, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(enviar_puntuacion)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(txt_puntuacion)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(spiner_puntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(txt_puntuacion)
-                                .addGap(70, 70, 70)
-                                .addComponent(spiner_puntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(12, 12, 12))
+                                .addComponent(campo_nombre)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(nombre_jugador, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(317, 317, 317)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnTerminarOrden, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campo_nombre)
-                    .addComponent(nombre_jugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(10, 10, 10)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(campo_nombre)
+                                        .addComponent(nombre_jugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(19, 19, 19)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(spiner_puntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txt_puntuacion))
+                                    .addGap(18, 18, 18)
+                                    .addComponent(enviar_puntuacion)
+                                    .addGap(53, 53, 53))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(spiner_puntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_puntuacion))
-                .addGap(18, 18, 18)
-                .addComponent(enviar_puntuacion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
+                .addComponent(btnTerminarOrden)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 230, Short.MAX_VALUE)
                 .addComponent(salirMenuPrincipal_Juego)
-                .addGap(19, 19, 19))
+                .addGap(16, 16, 16))
         );
 
         pack();
@@ -134,6 +260,26 @@ public class Juego extends javax.swing.JFrame {
         
         spiner_puntuacion.setValue(0);
     }//GEN-LAST:event_enviar_puntuacionActionPerformed
+
+    private void btnTerminarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTerminarOrdenActionPerformed
+        TxtPaneOrden1.setText("");
+        
+        if(TxtPaneOrden1.getText().isEmpty() && 
+          !TxtPaneOrden2.getText().isEmpty() && 
+           TxtPaneOrden3.getText().isEmpty()){
+            
+            TxtPaneOrden1.setText(TxtPaneOrden2.getText());
+            TxtPaneOrden2.setText("");
+            
+        }else if(TxtPaneOrden1.getText().isEmpty() && 
+                !TxtPaneOrden2.getText().isEmpty() && 
+                !TxtPaneOrden3.getText().isEmpty()){
+            
+            TxtPaneOrden1.setText(TxtPaneOrden2.getText());
+            TxtPaneOrden2.setText(TxtPaneOrden3.getText());
+            TxtPaneOrden3.setText("");
+        }
+    }//GEN-LAST:event_btnTerminarOrdenActionPerformed
 
     /**
      * @param args the command line arguments
@@ -171,9 +317,16 @@ public class Juego extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextPane TxtPaneOrden1;
+    private javax.swing.JTextPane TxtPaneOrden2;
+    private javax.swing.JTextPane TxtPaneOrden3;
+    private javax.swing.JButton btnTerminarOrden;
     private javax.swing.JLabel campo_nombre;
     private javax.swing.JButton enviar_puntuacion;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField nombre_jugador;
     private javax.swing.JButton salirMenuPrincipal_Juego;
     private javax.swing.JSpinner spiner_puntuacion;

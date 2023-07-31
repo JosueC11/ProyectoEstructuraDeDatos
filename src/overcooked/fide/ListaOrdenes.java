@@ -4,6 +4,8 @@
  */
 package overcooked.fide;
 
+import java.util.Random;
+
 /**
  *
  * @author Josuu
@@ -11,6 +13,8 @@ package overcooked.fide;
 public class ListaOrdenes {
     
     private NodoLista cabeza;
+    
+    private ColaOrdenes cola = new ColaOrdenes();
     
     public void inserta(Orden orden){
         
@@ -44,34 +48,50 @@ public class ListaOrdenes {
         } 
     }
     
-    public Orden extrae (int id) {
-        
-        Orden orden = null;
-        
+    public void agregarOrdenCola(){
+
+        Random random = new Random();
+        int ordenAleatoria = random.nextInt(3);
+
         if (cabeza != null){ 
             
-            if (cabeza.getOrden().getId () == id){
+            if (cabeza.getOrden().getId () == ordenAleatoria){
                 
-                orden = cabeza.getOrden();
+                cola.encola(cabeza.getOrden());
                 
             }else{
                 
                 NodoLista aux = cabeza; 
                 
-                while (aux. getSiguiente() != null && aux.getSiguiente()
-                        .getOrden().getId() < id){
+                while (aux.getSiguiente() != null && aux.getSiguiente()
+                        .getOrden().getId() != ordenAleatoria){
                     
-                    aux = aux. getSiguiente();
+                    aux = aux.getSiguiente();
                     
                 }
                 
-                if (aux. getSiguiente () != null && aux. getSiguiente()
-                        .getOrden().getId() == id) {
+                if (aux. getSiguiente () != null && aux.getSiguiente()
+                        .getOrden().getId() == ordenAleatoria) {
                     
-                    orden = aux.getSiguiente().getOrden();
+                    cola.encola(aux.getSiguiente().getOrden());
                 }
             }
         }
-        return orden;
+    }
+    
+    public void llenarLista(){
+        
+        inserta(new Orden("Hamburguesa de carne",true,true,
+                false,false,2,0));
+        inserta(new Orden("Hamburguesa con queso",true,true,
+                true,false,3,1));
+        inserta(new Orden("Hamburguesa clásica",true,true,
+                true,true,4,2));
+  
+    }
+    
+    public Orden devolver(){
+        
+        return cola.atiende();
     }
 }
