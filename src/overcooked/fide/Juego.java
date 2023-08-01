@@ -4,6 +4,9 @@ package overcooked.fide;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 
@@ -15,86 +18,277 @@ public class Juego extends javax.swing.JFrame {
     
     ListaOrdenes lista = new ListaOrdenes();
 
-    private Timer tiempo;
+    private Timer tiempoOrdenes;
+    private Timer tiempoJuego;
     
-    private int centesima = 99, segundo = 19;
+    private int centesimaOrdenes = 99, segundoOrdenes = 1;
+    private int centesimaJuego = 99, segundoJuego = 59, minutoJuego = 4;
     
-    private ActionListener accion = new ActionListener(){
+    private int inicioOrdenes = 0;
+
+    public Juego(){
+        
+        initComponents();
+        // Setear posición a la pantalla
+        setLocationRelativeTo(null);
+        setResizable(false);  
+        
+        nombre_jugador.setText(jugador.getNombre());
+        labelOrden1.setText("vacio");
+        labelOrden2.setText("vacio");
+        labelOrden3.setText("vacio");
+        
+        setImagenesOrdenesBlanco();
+        
+        lista.llenarLista();
+        lista.agregarOrdenCola();
+        generarOrdenInicio();
+        
+        tiempoOrdenes = new Timer(1,generarOrdenes);
+        tiempoOrdenes.start(); 
+        
+        tiempoJuego = new Timer(1,temporizadorJuego);
+        tiempoJuego.start(); 
+    }
+    
+    private ActionListener generarOrdenes = new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent e) {
             
-            centesima --;
-            lista.llenarLista();
+            centesimaOrdenes --;
             lista.agregarOrdenCola();
-            generarOrdenInicio();
-            if(centesima == 0){
+            if(centesimaOrdenes == 0){
                 
-                segundo --;
-                centesima = 99;
+                segundoOrdenes --;
+                centesimaOrdenes = 99;
             }
-            if(segundo == -1){
+            if(segundoOrdenes == -1){
                 
                 lista.agregarOrdenCola();
                 generarOrden();
-                centesima = 99;
-                segundo = 19;     
+                centesimaOrdenes = 99;
+                segundoOrdenes = 1;     
             }  
         }   
     };
     
-    public Juego(){
+    private ActionListener temporizadorJuego = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            
+            centesimaJuego --;
+            
+            if(centesimaJuego == -1){
+                
+                segundoJuego --;
+                centesimaJuego = 99;
+            }
+            if(segundoJuego == -1){
+                
+                minutoJuego --;
+                centesimaJuego = 99;
+                segundoJuego = 59;     
+            }
+            if(minutoJuego == -1){
+                
+                terminarJuego();             
+            } 
+            actualizarLabelTemporizador();
+        }   
+    };
+    
+    public void actualizarLabelTemporizador(){
         
-        initComponents();
+        String tiempo = (minutoJuego <= 9? "0":"")+minutoJuego+":"+
+                (segundoJuego <= 9? "0":"")+segundoJuego+":"+
+                (centesimaJuego <= 9? "0":"")+centesimaJuego;
         
-        nombre_jugador.setText(jugador.getNombre());
+        labelTemporizador.setText(tiempo);   
+    }
+    
+    public void setImagenesOrdenesBlanco(){
         
-        tiempo = new Timer(1,accion);
-        tiempo.start();  
+        //Se crea un objeto Icon con la libreria Icon, se le pasa la posición 
+        //del label 
+        Icon ordenBlanco = new ImageIcon(new ImageIcon
+        (getClass().getResource("ordenBlanco.png")).getImage()
+        .getScaledInstance(labelOrden1.getWidth(), 
+        labelOrden1.getHeight(), 0));
+                        
+        // Se le setea el Icon a el label
+        labelOrden1.setIcon(ordenBlanco);
+        labelOrden2.setIcon(ordenBlanco);
+        labelOrden3.setIcon(ordenBlanco);
+
     }
     
     public void generarOrdenInicio(){
         
-        int inicio = 0;
-        if(inicio == 0){
+        if(inicioOrdenes == 0){
             
             Orden orden = lista.devolver();
             
-            if (TxtPaneOrden1.getText().isEmpty() && 
-                TxtPaneOrden2.getText().isEmpty() && 
-                TxtPaneOrden3.getText().isEmpty()){
+            if (labelOrden1.getText().equals("vacio") && 
+                labelOrden2.getText().equals("vacio") && 
+                labelOrden3.getText().equals("vacio")){
 
-                TxtPaneOrden1.setText(orden.getNombre());
+                switch(orden.getId()){
+                    
+                    case 0:
+                        
+                        //Se crea un objeto Icon con la libreria Icon, se le 
+                        //pasa la posición del label 
+                        Icon OrdenCarne = new ImageIcon(new ImageIcon
+                        (getClass().getResource
+                        ("hamburguesaDeCarne.png")).getImage()
+                        .getScaledInstance(labelOrden1.getWidth(), 
+                        labelOrden1.getHeight(),0));
+
+                        // Se le setea el Icon a el label
+                        labelOrden1.setIcon(OrdenCarne);
+                        labelOrden1.setText("Lleno");   
+                        break;
+
+                    case 1:
+
+                        //Se crea un objeto Icon con la libreria Icon, se le 
+                        //pasa la posición del label 
+                        Icon OrdenQueso = new ImageIcon(new ImageIcon
+                        (getClass().getResource
+                        ("hamburguesaConQueso.png")).getImage()
+                        .getScaledInstance(labelOrden2.getWidth(), 
+                        labelOrden2.getHeight(),0));
+
+                        // Se le setea el Icon a el label
+                        labelOrden1.setIcon(OrdenQueso);
+                        labelOrden1.setText("Lleno");
+                        break;
+                    case 2:
+
+                        //Se crea un objeto Icon con la libreria Icon, se le
+                        //pasa la posición del label 
+                        Icon OrdenClasica = new ImageIcon(new ImageIcon
+                        (getClass().getResource
+                        ("hamburguesaClasica.png")).getImage()
+                        .getScaledInstance(labelOrden3.getWidth(), 
+                        labelOrden3.getHeight(),0));
+
+                        // Se le setea el Icon a el label
+                        labelOrden1.setIcon(OrdenClasica);
+                        labelOrden1.setText("Lleno");
+                        break;
+                } 
             }
-            inicio ++;        
+            inicioOrdenes ++;        
         }
     }
     
     public void generarOrden(){
         
-        if (segundo == -1) {
+        Orden orden = lista.devolver();
 
-            Orden orden = lista.devolver();
+        //Se crea un objeto Icon con la libreria Icon, se le pasa la posición 
+        //del label 
+        Icon OrdenCarne = new ImageIcon(new ImageIcon(getClass()
+                .getResource("hamburguesaDeCarne.png")).getImage()
+                .getScaledInstance(labelOrden1.getWidth(), 
+                labelOrden1.getHeight(),0));
 
-            if (TxtPaneOrden1.getText().isEmpty() && 
-                TxtPaneOrden2.getText().isEmpty() && 
-                TxtPaneOrden3.getText().isEmpty()) {
+        Icon OrdenQueso = new ImageIcon(new ImageIcon(getClass()
+                .getResource("hamburguesaConQueso.png")).getImage()
+                .getScaledInstance(labelOrden1.getWidth(), 
+                        labelOrden1.getHeight(),0));
 
-                TxtPaneOrden1.setText(orden.getNombre());
-                
+        Icon OrdenClasica = new ImageIcon(new ImageIcon(getClass()
+                .getResource("hamburguesaClasica.png")).getImage()
+                .getScaledInstance(labelOrden1.getWidth(), 
+                        labelOrden1.getHeight(),0));
 
-            } else if (!TxtPaneOrden1.getText().isEmpty() && 
-                        TxtPaneOrden2.getText().isEmpty() && 
-                        TxtPaneOrden3.getText().isEmpty()){
+        if (labelOrden1.getText().equals("vacio")
+                && labelOrden2.getText().equals("vacio")
+                && labelOrden3.getText().equals("vacio")) {
 
-                TxtPaneOrden2.setText(orden.getNombre());
+            switch (orden.getId()) {
 
-            } else if (!TxtPaneOrden1.getText().isEmpty() && 
-                       !TxtPaneOrden2.getText().isEmpty() && 
-                       TxtPaneOrden3.getText().isEmpty()){
+                case 0:
+                    // Se le setea el Icon a el label
+                    labelOrden1.setIcon(OrdenCarne);
+                    labelOrden1.setText("Lleno");
+                    
+                    break;
+                case 1:
+                    // Se le setea el Icon a el label
+                    labelOrden1.setIcon(OrdenQueso);
+                    labelOrden1.setText("Lleno");
+                    
+                    break;
+                case 2:
+                    // Se le setea el Icon a el label
+                    labelOrden1.setIcon(OrdenClasica);
+                    labelOrden1.setText("Lleno");
+                    
+                    break;
+            }
+        } else if (labelOrden1.getText().equals("Lleno")
+                && labelOrden2.getText().equals("vacio")
+                && labelOrden3.getText().equals("vacio")) {
 
-                TxtPaneOrden3.setText(orden.getNombre());
+            switch (orden.getId()) {
+
+                case 0:
+                    // Se le setea el Icon a el label
+                    labelOrden2.setIcon(OrdenCarne);
+                    labelOrden2.setText("Lleno");
+                    break;   
+                case 1:
+                    // Se le setea el Icon a el label
+                    labelOrden2.setIcon(OrdenQueso);
+                    labelOrden2.setText("Lleno");
+                    break;
+
+                case 2:
+                    // Se le setea el Icon a el label
+                    labelOrden2.setIcon(OrdenClasica);
+                    labelOrden2.setText("Lleno");
+                    break;
+            }
+
+        } else if (labelOrden1.getText().equals("Lleno")
+                && labelOrden2.getText().equals("Lleno")
+                && labelOrden3.getText().equals("vacio")) {
+
+            switch (orden.getId()) {
+
+                case 0:
+                    // Se le setea el Icon a el label
+                    labelOrden3.setIcon(OrdenCarne);
+                    labelOrden3.setText("Lleno");
+                    break;
+                case 1:
+                    // Se le setea el Icon a el label
+                    labelOrden3.setIcon(OrdenQueso);
+                    labelOrden3.setText("Lleno");
+                    break;
+                case 2:
+                    // Se le setea el Icon a el label
+                    labelOrden3.setIcon(OrdenClasica);
+                    labelOrden3.setText("Lleno");
+                    break;
             }
         }
+    }
+    
+    public void terminarJuego(){
+        
+        tiempoOrdenes.stop(); 
+        tiempoJuego.stop(); 
+        
+        JOptionPane.showMessageDialog
+        (null,"El juego terminó");
+        
+        PantallaInicio pantallaInicio = new PantallaInicio();
+        pantallaInicio.setVisible(true);
+        this.dispose();
     }
 
     /**
@@ -113,13 +307,11 @@ public class Juego extends javax.swing.JFrame {
         spiner_puntuacion = new javax.swing.JSpinner();
         txt_puntuacion = new javax.swing.JLabel();
         enviar_puntuacion = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        TxtPaneOrden3 = new javax.swing.JTextPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        TxtPaneOrden2 = new javax.swing.JTextPane();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        TxtPaneOrden1 = new javax.swing.JTextPane();
         btnTerminarOrden = new javax.swing.JButton();
+        labelTemporizador = new javax.swing.JLabel();
+        labelOrden2 = new javax.swing.JLabel();
+        labelOrden3 = new javax.swing.JLabel();
+        labelOrden1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -150,12 +342,6 @@ public class Juego extends javax.swing.JFrame {
             }
         });
 
-        jScrollPane1.setViewportView(TxtPaneOrden3);
-
-        jScrollPane2.setViewportView(TxtPaneOrden2);
-
-        jScrollPane3.setViewportView(TxtPaneOrden1);
-
         btnTerminarOrden.setText("Terminar Orden");
         btnTerminarOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,77 +349,81 @@ public class Juego extends javax.swing.JFrame {
             }
         });
 
+        labelOrden2.setText("vacio");
+
+        labelOrden3.setText("vacio");
+
+        labelOrden1.setText("vacio");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(salirMenuPrincipal_Juego)
-                        .addGap(111, 111, 111))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(campo_nombre)
+                        .addGap(18, 18, 18)
+                        .addComponent(nombre_jugador, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47)
+                        .addComponent(labelTemporizador, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(txt_puntuacion)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(enviar_puntuacion)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(txt_puntuacion)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(spiner_puntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(spiner_puntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 436, Short.MAX_VALUE)
+                                .addComponent(labelOrden1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(campo_nombre)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(nombre_jugador, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(317, 317, 317)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnTerminarOrden, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-                            .addComponent(jScrollPane3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9))
+                                .addComponent(enviar_puntuacion)
+                                .addGap(218, 218, 218)
+                                .addComponent(btnTerminarOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(12, 12, 12)
+                        .addComponent(labelOrden2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelOrden3, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(salirMenuPrincipal_Juego)
+                .addGap(455, 455, 455))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(10, 10, 10)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(campo_nombre)
-                                        .addComponent(nombre_jugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(19, 19, 19)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(spiner_puntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txt_puntuacion))
-                                    .addGap(18, 18, 18)
-                                    .addComponent(enviar_puntuacion)
-                                    .addGap(53, 53, 53))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addGap(18, 18, 18)
-                .addComponent(btnTerminarOrden)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 230, Short.MAX_VALUE)
-                .addComponent(salirMenuPrincipal_Juego)
-                .addGap(16, 16, 16))
+                            .addComponent(labelTemporizador, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(nombre_jugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(campo_nombre)))
+                        .addGap(18, 31, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(labelOrden1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(labelOrden2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(labelOrden3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(309, 309, 309))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(spiner_puntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_puntuacion))
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(enviar_puntuacion)
+                            .addComponent(btnTerminarOrden))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(salirMenuPrincipal_Juego)
+                        .addGap(17, 17, 17))))
         );
 
         pack();
@@ -254,7 +444,8 @@ public class Juego extends javax.swing.JFrame {
 
         int puntuacion = (int) spiner_puntuacion.getValue();
 
-        Puntuacion nuevaPuntuacion = new Puntuacion(puntuacion, jugador);
+        Puntuacion nuevaPuntuacion = new Puntuacion
+        (puntuacion, jugador);
 
         arrPuntuaciones.add(nuevaPuntuacion);
         
@@ -262,22 +453,35 @@ public class Juego extends javax.swing.JFrame {
     }//GEN-LAST:event_enviar_puntuacionActionPerformed
 
     private void btnTerminarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTerminarOrdenActionPerformed
-        TxtPaneOrden1.setText("");
         
-        if(TxtPaneOrden1.getText().isEmpty() && 
-          !TxtPaneOrden2.getText().isEmpty() && 
-           TxtPaneOrden3.getText().isEmpty()){
+        //Se crea un objeto Icon con la libreria Icon, se le pasa la posición 
+        //del label 
+        Icon ordenBlanco = new ImageIcon(new ImageIcon(getClass()
+                .getResource("ordenBlanco.png")).getImage()
+                .getScaledInstance(labelOrden1.getWidth(), 
+                labelOrden1.getHeight(),0));
+                        
+        labelOrden1.setText("vacio");
+        labelOrden1.setIcon(ordenBlanco);
+
+        if(labelOrden1.getText().equals("vacio") && 
+          labelOrden2.getText().equals("Lleno") && 
+           labelOrden3.getText().equals("vacio")){
             
-            TxtPaneOrden1.setText(TxtPaneOrden2.getText());
-            TxtPaneOrden2.setText("");
+            labelOrden1.setIcon(labelOrden2.getIcon());
+            labelOrden2.setIcon(ordenBlanco);
+            labelOrden1.setText("Lleno");
+            labelOrden2.setText("vacio");
             
-        }else if(TxtPaneOrden1.getText().isEmpty() && 
-                !TxtPaneOrden2.getText().isEmpty() && 
-                !TxtPaneOrden3.getText().isEmpty()){
+        }else if(labelOrden1.getText().equals("vacio") && 
+                labelOrden2.getText().equals("Lleno") && 
+                labelOrden3.getText().equals("Lleno")){
             
-            TxtPaneOrden1.setText(TxtPaneOrden2.getText());
-            TxtPaneOrden2.setText(TxtPaneOrden3.getText());
-            TxtPaneOrden3.setText("");
+            labelOrden1.setIcon(labelOrden2.getIcon());
+            labelOrden2.setIcon(labelOrden3.getIcon());
+            labelOrden3.setIcon(ordenBlanco);
+            labelOrden1.setText("Lleno");
+            labelOrden3.setText("vacio");
         }
     }//GEN-LAST:event_btnTerminarOrdenActionPerformed
 
@@ -317,16 +521,14 @@ public class Juego extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextPane TxtPaneOrden1;
-    private javax.swing.JTextPane TxtPaneOrden2;
-    private javax.swing.JTextPane TxtPaneOrden3;
     private javax.swing.JButton btnTerminarOrden;
     private javax.swing.JLabel campo_nombre;
     private javax.swing.JButton enviar_puntuacion;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel labelOrden1;
+    private javax.swing.JLabel labelOrden2;
+    private javax.swing.JLabel labelOrden3;
+    private javax.swing.JLabel labelTemporizador;
     private javax.swing.JTextField nombre_jugador;
     private javax.swing.JButton salirMenuPrincipal_Juego;
     private javax.swing.JSpinner spiner_puntuacion;
