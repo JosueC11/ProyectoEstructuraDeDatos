@@ -20,6 +20,7 @@ public class ColaOrdenes{
         this.largo = 0;
     }
     
+    //Encola una Orden
     public void encola(Orden orden){
         
         if(frente == null){ 
@@ -35,6 +36,7 @@ public class ColaOrdenes{
         largo++;
     }
     
+    //Atiende una cola
     public Orden atiende(){
         NodoCola aux = frente;
         Orden orden = null;

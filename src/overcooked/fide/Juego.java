@@ -34,23 +34,34 @@ public class Juego extends javax.swing.JFrame {
         setResizable(false);  
         
         nombre_jugador.setText(jugador.getNombre());
+        
+        //setear text label
         labelOrden1.setText("vacio");
         labelOrden2.setText("vacio");
         labelOrden3.setText("vacio");
         
+        //carga imagenes de lo campos de las ordenes
         setImagenesOrdenesBlanco();
         
+        //Llenar la lista de Ordenes
         lista.llenarLista();
+        
+        //agrega una orden a la cola
         lista.agregarOrdenCola();
+        
+        //genera una orden en la pantalla al inicio del juego
         generarOrdenInicio();
         
+        //setear el delay y la tarea a realizar 
         tiempoOrdenes = new Timer(1,generarOrdenes);
         tiempoOrdenes.start(); 
         
+        //setear el delay y la tarea a realizar 
         tiempoJuego = new Timer(1,temporizadorJuego);
         tiempoJuego.start(); 
     }
     
+    //Tarea de generar ordenes
     private ActionListener generarOrdenes = new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -72,6 +83,7 @@ public class Juego extends javax.swing.JFrame {
         }   
     };
     
+    //Tarea de temporizador
     private ActionListener temporizadorJuego = new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -93,10 +105,13 @@ public class Juego extends javax.swing.JFrame {
                 
                 terminarJuego();             
             } 
+            
+            //actualiza el label de la pantalla temporizador
             actualizarLabelTemporizador();
         }   
     };
     
+    //actualiza el temporizador
     public void actualizarLabelTemporizador(){
         
         String tiempo = (minutoJuego <= 9? "0":"")+minutoJuego+":"+
@@ -106,6 +121,7 @@ public class Juego extends javax.swing.JFrame {
         labelTemporizador.setText(tiempo);   
     }
     
+    //setea los campos de las ordenes
     public void setImagenesOrdenesBlanco(){
         
         //Se crea un objeto Icon con la libreria Icon, se le pasa la posición 
@@ -122,16 +138,21 @@ public class Juego extends javax.swing.JFrame {
 
     }
     
+    //genera las ordenes al inicio del juego
     public void generarOrdenInicio(){
         
         if(inicioOrdenes == 0){
             
+            // metodo que devulve una orden
             Orden orden = lista.devolver();
+            
+            //revisar si hay algo en las ordenes
             
             if (labelOrden1.getText().equals("vacio") && 
                 labelOrden2.getText().equals("vacio") && 
                 labelOrden3.getText().equals("vacio")){
 
+                //casos posibles segun el id de orden
                 switch(orden.getId()){
                     
                     case 0:
@@ -183,8 +204,10 @@ public class Juego extends javax.swing.JFrame {
         }
     }
     
+    //metodo para generar las ordenes cada 20 segundos
     public void generarOrden(){
         
+        //metodo devulve una orden
         Orden orden = lista.devolver();
 
         //Se crea un objeto Icon con la libreria Icon, se le pasa la posición 

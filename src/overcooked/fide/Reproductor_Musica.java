@@ -18,7 +18,7 @@ public class Reproductor_Musica implements Runnable
         try 
         {
             cancion = AudioSystem.getClip();
-            cancion.open(AudioSystem.getAudioInputStream(getClass().getResourceAsStream("FeidNormal.wav")));
+            cancion.open(AudioSystem.getAudioInputStream(getClass().getResourceAsStream("feid.wav")));
             controladorVolumen = (FloatControl) cancion.getControl(FloatControl.Type.MASTER_GAIN);
             controladorVolumen.setValue(-30.0f);
             reproduciendo = false;
