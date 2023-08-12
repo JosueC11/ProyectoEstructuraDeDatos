@@ -8,40 +8,41 @@ import javax.swing.JOptionPane;
 
 public class PantallaInicio extends javax.swing.JFrame {
 
-
-    
-    // Hacemos get de la instancia del Jugador
-    // Se cambió por el get porque el new lo que hacía era crear un objeto nuevo cada vez que se devolvía al menú
-    // por eso se borraban los datos del jugador ggwp
-    
-    Jugador jugador = Jugador.getInstance();
+    static ListaJugador listaJugadores = new ListaJugador();
 
     public PantallaInicio() 
     {
         initComponents();
         activarCancionInicio();
-        activarImagenes();
+        activarImagenes(listaJugadores);
+        
+        Jugador jugador_predeterminado = new Jugador("Jugador1", "M", true);
+        listaJugadores.agregarJugador(jugador_predeterminado);
         
         // Setear posición a la pantalla
+        
         setLocationRelativeTo(null);
         setResizable(false);   
         
         grupoGenero.add(f);
         grupoGenero.add(m);
 
-        // Mostrar los datos del jugador en los campos correspondientes cada vez que se devuelva al menú
-        txtNombre.setText(jugador.getNombre());
-        if (jugador.getGenero() != null) {
-            if (jugador.getGenero().equalsIgnoreCase("M")) 
+        Jugador ultimoJugador = listaJugadores.obtenerUltimoJugadorSesion();
+
+        txtNombre.setText(ultimoJugador.getNombre());
+        if (ultimoJugador.getGenero() != null)
+        {
+            if (ultimoJugador.getGenero().equalsIgnoreCase("M")) 
             {
                 m.setSelected(true);
+                f.setSelected(false);
             } 
-            else if (jugador.getGenero().equalsIgnoreCase("F")) 
+            else if (ultimoJugador.getGenero().equalsIgnoreCase("F")) 
             {
+                m.setSelected(false);
                 f.setSelected(true);
             }
         }
-    
     }
 
     public final void activarCancionInicio() 
@@ -54,10 +55,10 @@ public class PantallaInicio extends javax.swing.JFrame {
         }
     }
     
-    public final void activarImagenes(){
+    public final void activarImagenes(ListaJugador listaJugadores){
 
-        //Se crea un objeto Icon con la libreria Icon, se le pasa la posición 
-        //del label 
+        // Utilizamos el parámetro listaJugadores para obtener el último jugador
+        
         Icon header = new ImageIcon(new ImageIcon
         (getClass().getResource("overcookedheader.png")).getImage().getScaledInstance
         (lblImageHeader.getWidth(), lblImageHeader.getHeight(), 
@@ -66,25 +67,29 @@ public class PantallaInicio extends javax.swing.JFrame {
         // Se le setea el Icon a el label
         lblImageHeader.setIcon(header);
         
-        if(jugador.getIdentificado() == null){
-            
-            Icon user = new ImageIcon(new ImageIcon
-            (getClass().getResource("user.png")).getImage().getScaledInstance
-            (lblImageUser.getWidth(), lblImageUser.getHeight(), 
-            0));
-            
-            lblImageUser.setIcon(user); 
-   
-        }else{
-            
+        Jugador ultimoJugador = listaJugadores.obtenerUltimoJugadorSesion();
+
+        if (ultimoJugador == null || ultimoJugador.getIdentificado() == null) 
+        {
+
+            Icon user = new ImageIcon(new ImageIcon(
+    getClass().getResource("user.png")).getImage().getScaledInstance
+        (lblImageUser.getWidth(), lblImageUser.getHeight(), 0));
+
+            lblImageUser.setIcon(user);
+
+        } else {
+
             actualizarImagenes();
-        
-        } 
+
+        }  
     }
     
     public void actualizarImagenes(){
         
-        String genero = jugador.getGenero();
+        Jugador ultimoJugador = listaJugadores.obtenerUltimoJugadorSesion();
+        
+        String genero = ultimoJugador.getGenero();
 
         if(genero != null && genero.equalsIgnoreCase("M")){
             
@@ -113,18 +118,21 @@ public class PantallaInicio extends javax.swing.JFrame {
             
             if(m.isSelected() || f.isSelected()){
                 
-                jugador.setNombre(txtNombre.getText());
-                jugador.setIdentificado(true);
-                
                 if(m.isSelected()){
                     
-                    jugador.setGenero("M"); 
+                    Jugador jugadorM = new Jugador(txtNombre.getText(), "M", true);
+                    listaJugadores.agregarJugador(jugadorM);
                 }else{
                     
-                    jugador.setGenero("F"); 
+                    Jugador jugadorF = new Jugador(txtNombre.getText(), "F", true);
+                    listaJugadores.agregarJugador(jugadorF);
                 }
                 JOptionPane.showMessageDialog
                 (null,"Guardado Correctamente");
+                
+                String Nombre = listaJugadores.obtenerUltimoJugadorSesion().getNombre();
+                
+                JOptionPane.showMessageDialog(null, Nombre);
                 
                 actualizarImagenes();
                 
@@ -135,7 +143,9 @@ public class PantallaInicio extends javax.swing.JFrame {
                             + "genero para continuar");
                 
             }
-        }else{
+        }
+        else
+        {
             
             JOptionPane.showMessageDialog
             (null,"Debe llenar el campo de nombre "
@@ -155,7 +165,6 @@ public class PantallaInicio extends javax.swing.JFrame {
 
         grupoGenero = new javax.swing.ButtonGroup();
         lblImageHeader = new javax.swing.JLabel();
-        btnPuntuaciones = new javax.swing.JButton();
         btnJugar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         lblImageUser = new javax.swing.JLabel();
@@ -166,14 +175,6 @@ public class PantallaInicio extends javax.swing.JFrame {
         btnGuardar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        btnPuntuaciones.setBackground(new java.awt.Color(0, 153, 153));
-        btnPuntuaciones.setText("Puntuaciones");
-        btnPuntuaciones.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPuntuacionesActionPerformed(evt);
-            }
-        });
 
         btnJugar.setBackground(new java.awt.Color(0, 153, 153));
         btnJugar.setText("Jugar");
@@ -221,9 +222,7 @@ public class PantallaInicio extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnPuntuaciones, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
+                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(349, 349, 349)
@@ -252,9 +251,7 @@ public class PantallaInicio extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnPuntuaciones)
-                            .addComponent(btnJugar))
+                        .addComponent(btnJugar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSalir)
                         .addGap(22, 22, 22))
@@ -283,24 +280,18 @@ public class PantallaInicio extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
-    private void btnPuntuacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPuntuacionesActionPerformed
-        Puntuaciones mostrar_puntuaciones = new Puntuaciones(); 
-        mostrar_puntuaciones.setVisible(true); 
-        mostrar_puntuaciones.setLocationRelativeTo(null);
-        this.dispose();
-    }//GEN-LAST:event_btnPuntuacionesActionPerformed
-
     private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
         
-        if(jugador.getIdentificado() == null){
-            
-            JOptionPane.showMessageDialog
-            (null,"Debe Identificarse antes de jugar");
-        
-        }else{
-            
-            Juego mostrar_juego = new Juego(); 
-            mostrar_juego.setVisible(true); 
+        Jugador ultimoJugador = listaJugadores.obtenerUltimoJugadorSesion();
+
+        if (ultimoJugador.getIdentificado() == null) 
+        {
+            JOptionPane.showMessageDialog(null, "Debe Identificarse antes de jugar");
+        } 
+        else 
+        {
+            Juego mostrar_juego = new Juego(listaJugadores); 
+            mostrar_juego.setVisible(true);
             mostrar_juego.setLocationRelativeTo(null);
             this.dispose();
         }
@@ -312,6 +303,7 @@ public class PantallaInicio extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         iniciarSesion();        
+        activarImagenes(listaJugadores);       
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     /**
@@ -352,7 +344,6 @@ public class PantallaInicio extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnJugar;
-    private javax.swing.JButton btnPuntuaciones;
     private javax.swing.JButton btnSalir;
     private javax.swing.JRadioButton f;
     private javax.swing.ButtonGroup grupoGenero;

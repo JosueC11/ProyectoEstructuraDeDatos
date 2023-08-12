@@ -9,23 +9,13 @@ public class Jugador
     private String genero;
     private Boolean identificado;
 
-    //Se crea una instancia estática del jugador para llamarlo cuando sea necesario
-    private static Jugador jugadorInstance = null;
-    
-    private Jugador() 
-    {
-       
+    public Jugador(String nombre, String genero, Boolean identificado) {
+        this.nombre = nombre;
+        this.genero = genero;
+        this.identificado = identificado;
     }
 
-    // Se crea el metodo para llamar al usuario registrado
-    
-    public static Jugador getInstance() 
-    {
-        if (jugadorInstance == null) 
-        {
-            jugadorInstance = new Jugador();
-        }
-        return jugadorInstance;
+    public Jugador() {
     }
 
     public String getNombre() {

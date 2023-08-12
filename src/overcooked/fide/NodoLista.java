@@ -1,20 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package overcooked.fide;
 
-/**
- *
- * @author Josuu
- */
+
 public class NodoLista {
     
     private Orden orden;
+    private Jugador jugador;
+    private Puntuacion puntuacion;
     private NodoLista siguiente;
 
     public NodoLista(Orden orden) {
         this.orden = orden;
+    }
+
+    public NodoLista(Puntuacion puntuacion) {
+        this.puntuacion = puntuacion;
+    }
+
+    public NodoLista(Jugador jugador) {
+        this.jugador = jugador;
     }
 
     public Orden getOrden() {
@@ -23,6 +26,22 @@ public class NodoLista {
 
     public void setOrden(Orden orden) {
         this.orden = orden;
+    }
+
+    public Jugador getJugador() {
+        return jugador;
+    }
+
+    public void setJugador(Jugador jugador) {
+        this.jugador = jugador;
+    }
+
+    public Puntuacion getPuntuacion() {
+        return puntuacion;
+    }
+
+    public void setPuntuacion(Puntuacion puntuacion) {
+        this.puntuacion = puntuacion;
     }
 
     public NodoLista getSiguiente() {
