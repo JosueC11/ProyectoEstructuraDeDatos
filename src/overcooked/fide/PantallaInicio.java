@@ -7,11 +7,14 @@ import javax.swing.JOptionPane;
 
 
 public class PantallaInicio extends javax.swing.JFrame {
-
-    static ListaJugador listaJugadores = new ListaJugador();
-
-    public PantallaInicio() 
+    
+    private ListaJugador listaJugadores;
+    private ListaPuntuaciones listaPuntuaciones;
+    
+    public PantallaInicio(ListaJugador listaJugadores, ListaPuntuaciones listaPuntuaciones) 
     {
+        this.listaJugadores = listaJugadores;
+        this.listaPuntuaciones = listaPuntuaciones;
         initComponents();
         activarCancionInicio();
         activarImagenes(listaJugadores);
@@ -113,26 +116,20 @@ public class PantallaInicio extends javax.swing.JFrame {
     }
     
     public void iniciarSesion(){
-
+        
         if(!txtNombre.getText().isEmpty()){
             
             if(m.isSelected() || f.isSelected()){
                 
-                if(m.isSelected()){
-                    
+                if (m.isSelected()) {
                     Jugador jugadorM = new Jugador(txtNombre.getText(), "M", true);
                     listaJugadores.agregarJugador(jugadorM);
-                }else{
-                    
+                } else {
                     Jugador jugadorF = new Jugador(txtNombre.getText(), "F", true);
                     listaJugadores.agregarJugador(jugadorF);
                 }
-                JOptionPane.showMessageDialog
-                (null,"Guardado Correctamente");
-                
-                String Nombre = listaJugadores.obtenerUltimoJugadorSesion().getNombre();
-                
-                JOptionPane.showMessageDialog(null, Nombre);
+
+                JOptionPane.showMessageDialog(null, "Guardado Correctamente");
                 
                 actualizarImagenes();
                 
@@ -290,7 +287,7 @@ public class PantallaInicio extends javax.swing.JFrame {
         } 
         else 
         {
-            Juego mostrar_juego = new Juego(listaJugadores); 
+            Juego mostrar_juego = new Juego(listaJugadores, listaPuntuaciones); 
             mostrar_juego.setVisible(true);
             mostrar_juego.setLocationRelativeTo(null);
             this.dispose();
@@ -302,44 +299,11 @@ public class PantallaInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_fActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        iniciarSesion();        
-        activarImagenes(listaJugadores);       
+        iniciarSesion();
+        activarImagenes(listaJugadores);      
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PantallaInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PantallaInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PantallaInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PantallaInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PantallaInicio().setVisible(true);            
-            }
-        });
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;

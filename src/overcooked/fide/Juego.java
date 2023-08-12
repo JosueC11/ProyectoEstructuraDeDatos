@@ -1,3 +1,4 @@
+
 package overcooked.fide;
 
 import java.awt.event.ActionEvent;
@@ -11,8 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 public final class Juego extends javax.swing.JFrame {
     
-    ListaOrdenes lista = new ListaOrdenes();
-    ListaPuntuaciones listaPuntuaciones = new ListaPuntuaciones();
+    ListaOrdenes lista = new ListaOrdenes(); 
     
     ListaCircular  listaCircular = new ListaCircular();
 
@@ -28,12 +28,14 @@ public final class Juego extends javax.swing.JFrame {
     private int inicioOrdenes = 0;
 
     private ListaJugador listaJugadores;
+    private ListaPuntuaciones listaPuntuaciones;
     
-    public Juego(ListaJugador listaJugadores)
+    public Juego(ListaJugador listaJugadores, ListaPuntuaciones listaPuntuaciones)
     {
         
         initComponents();
         this.listaJugadores = listaJugadores;
+        this.listaPuntuaciones = listaPuntuaciones;
         // Setear posición a la pantalla
         setLocationRelativeTo(null);
         setResizable(false); 
@@ -509,7 +511,7 @@ public final class Juego extends javax.swing.JFrame {
         JOptionPane.showMessageDialog
         (null,"El juego terminó");
         
-        PantallaInicio pantallaInicio = new PantallaInicio();
+        PantallaInicio pantallaInicio = new PantallaInicio(listaJugadores, listaPuntuaciones);
         pantallaInicio.setVisible(true);
         this.dispose();
     }
@@ -777,7 +779,7 @@ public final class Juego extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void salirMenuPrincipal_JuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirMenuPrincipal_JuegoActionPerformed
-        PantallaInicio volvermenu = new PantallaInicio(); 
+        PantallaInicio volvermenu = new PantallaInicio(listaJugadores, listaPuntuaciones); 
         volvermenu.setVisible(true); 
         volvermenu.setLocationRelativeTo(null);
         this.dispose();
@@ -794,22 +796,18 @@ public final class Juego extends javax.swing.JFrame {
         // Obtener el jugador que inició sesión
         Jugador ultimoJugador = listaJugadores.obtenerUltimoJugadorSesion();
 
-        // Verificar que haya un jugador antes de agregar la puntuación
-        if (ultimoJugador != null) {
-            // Crear una nueva instancia de Puntuacion con el jugador y la puntuación
-            Puntuacion nuevaPuntuacion = new Puntuacion(ultimoJugador, puntuacion);
-
-            // Agregar la nueva puntuación a la lista de puntuaciones
-            listaPuntuaciones.agregarPuntuacion(nuevaPuntuacion);
-
-            // Actualizar la tabla de puntuaciones (si tienes una tabla en tu interfaz gráfica)
-            // actualizarTablaPuntuaciones();
-            // Reiniciar el valor del spiner de puntuación
-            spiner_puntuacion.setValue(0);
-        } 
-        else 
+        if (ultimoJugador != null) 
         {
-            JOptionPane.showMessageDialog(null, "No hay jugadores en la lista.");
+            String nombreJugador = ultimoJugador.getNombre();
+
+            Puntuacion nuevaPuntuacion = new Puntuacion(nombreJugador, puntuacion);
+            listaPuntuaciones.agregarPuntuacion(nuevaPuntuacion);
+            
+            listaPuntuaciones.verListaPuntuaciones();
+        } 
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No hay jugador en sesión.");
         }
     }//GEN-LAST:event_agregar_puntuacionActionPerformed
 

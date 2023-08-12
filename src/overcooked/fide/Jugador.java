@@ -15,9 +15,6 @@ public class Jugador
         this.identificado = identificado;
     }
 
-    public Jugador() {
-    }
-
     public String getNombre() {
         return nombre;
     }
@@ -40,7 +37,8 @@ public class Jugador
 
     public void setIdentificado(Boolean identificado) {
         this.identificado = identificado;
-    }  
+    }
+
 }
 
 

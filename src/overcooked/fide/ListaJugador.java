@@ -12,20 +12,26 @@ public class ListaJugador
         ultimoJugadorSesion = null;
     }
 
-    public void agregarJugador(Jugador jugador) 
-    {
+    public void agregarJugador(Jugador jugador) {
+        NodoLista nodoActual = primerNodo;
+
+        while (nodoActual != null) {
+            if (nodoActual.getJugador().getNombre().equals(jugador.getNombre())) {
+                nodoActual.getJugador().setGenero(jugador.getGenero());
+                nodoActual.getJugador().setIdentificado(jugador.getIdentificado());
+                return;
+            }
+            nodoActual = nodoActual.getSiguiente();
+        }
+
         NodoLista nuevoNodo = new NodoLista(jugador);
 
-        if (primerNodo == null) 
-        {
+        if (primerNodo == null) {
             primerNodo = nuevoNodo;
             ultimoJugadorSesion = nuevoNodo;
-        } 
-        else
-        {
-            NodoLista nodoActual = primerNodo;
-            while (nodoActual.getSiguiente() != null) 
-            {
+        } else {
+            nodoActual = primerNodo;
+            while (nodoActual.getSiguiente() != null) {
                 nodoActual = nodoActual.getSiguiente();
             }
             nodoActual.setSiguiente(nuevoNodo);
@@ -44,13 +50,5 @@ public class ListaJugador
         {
             return null;
         }
-    }
-    
-    
-    
-    // Método para establecer el último jugador que inició sesión
-    public void setUltimoJugadorSesion(NodoLista nodo) 
-    {
-        ultimoJugadorSesion = nodo;
     }
 }

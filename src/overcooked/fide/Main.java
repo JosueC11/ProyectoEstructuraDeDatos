@@ -1,13 +1,17 @@
+
 package overcooked.fide;
 
+import javax.swing.JOptionPane;
 
-public class Main {
+public class Main{
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args)
+    {
+        ListaJugador listaJugadores = new ListaJugador();
+        ListaPuntuaciones listaPuntuaciones = new ListaPuntuaciones();
+
+        PantallaInicio verMenu = new PantallaInicio(listaJugadores, listaPuntuaciones); 
+        verMenu.setVisible(true); 
+        verMenu.setLocationRelativeTo(null);
     }
-    
 }

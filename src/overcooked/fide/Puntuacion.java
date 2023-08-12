@@ -4,29 +4,28 @@ package overcooked.fide;
 
 public class Puntuacion 
 {
-    private Jugador jugador;
-    private int puntuacion;
+    private String Nombre;
+    private int Puntuacion;
 
-    public Puntuacion(Jugador jugador, int puntuacion) 
-    {
-        this.jugador = jugador;
-        this.puntuacion = puntuacion;
+    public Puntuacion(String Nombre, int Puntuacion) {
+        this.Nombre = Nombre;
+        this.Puntuacion = Puntuacion;
     }
 
-    public Jugador getJugador() {
-        return jugador;
+    public String getNombre() {
+        return Nombre;
     }
 
-    public void setJugador(Jugador jugador) {
-        this.jugador = jugador;
+    public void setNombre(String Nombre) {
+        this.Nombre = Nombre;
     }
 
     public int getPuntuacion() {
-        return puntuacion;
+        return Puntuacion;
     }
 
-    public void setPuntuacion(int puntuacion) {
-        this.puntuacion = puntuacion;
-    }
+    public void setPuntuacion(int Puntuacion) {
+        this.Puntuacion = Puntuacion;
+    } 
 }
 

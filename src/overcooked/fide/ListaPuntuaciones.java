@@ -6,59 +6,61 @@ import javax.swing.JOptionPane;
  *
  * @author Dennis
  */
+
 public class ListaPuntuaciones 
 {
     private NodoLista primerNodo;
 
-    public ListaPuntuaciones() 
-    {
+    public ListaPuntuaciones() {
         this.primerNodo = null;
     }
 
-    public void agregarPuntuacion(Puntuacion puntuacion) 
-    {
-        // Se crea un nuevo nodo con la puntuación proporcionada
+    public void agregarPuntuacion(Puntuacion puntuacion) {
         NodoLista nuevoNodo = new NodoLista(puntuacion);
+        
+        if (primerNodo == null) {
+            primerNodo = nuevoNodo;
+        } else {
+            NodoLista actual = primerNodo;
+            NodoLista anterior = null;
 
-        // Obtenemos el último jugador que inició sesión
-        ListaJugador listaJugadores = new ListaJugador();
-        Jugador ultimoJugador = listaJugadores.obtenerUltimoJugadorSesion();
-
-        // Se valida que haya un jugador para asociar la puntuación
-        if (ultimoJugador != null) 
-        {
-            // Se le da la puntuación al jugador y agregamos el nodo a la lista
-            puntuacion.setJugador(ultimoJugador);
-            if (primerNodo == null) 
-            {
-                primerNodo = nuevoNodo;
-            } 
-            else 
-            {
-                NodoLista nodoActual = primerNodo;
-                while (nodoActual.getSiguiente() != null) 
-                {
-                    nodoActual = nodoActual.getSiguiente();
-                }
-                nodoActual.setSiguiente(nuevoNodo);
+            while (actual != null && actual.getPuntuacion().getPuntuacion() >= puntuacion.getPuntuacion()) {
+                anterior = actual;
+                actual = actual.getSiguiente();
             }
-        } 
-        else 
-        {
-            //JOptionPane.showMessageDialog(null, 
-                    //"No hay jugadores en la lista.");
+
+            if (anterior == null) {
+                nuevoNodo.setSiguiente(primerNodo);
+                primerNodo = nuevoNodo;
+            } else {
+                anterior.setSiguiente(nuevoNodo);
+                nuevoNodo.setSiguiente(actual);
+            }
+        }
+    }    
+    
+    public void verListaPuntuaciones() {
+        NodoLista actual = primerNodo;
+
+        while (actual != null) {
+            Puntuacion puntuacion = actual.getPuntuacion();
+            System.out.println("Jugador: " + puntuacion.getNombre() + ", Puntuación: " + puntuacion.getPuntuacion());
+            actual = actual.getSiguiente();
         }
     }
     
-    public void mostrarListaPuntuaciones() 
+    /*public void mostrarListaPuntuaciones() 
     {
         NodoLista nodoActual = primerNodo;
+        System.out.println("-------------------------------");
         while (nodoActual != null)
         {
             Puntuacion puntuacion = nodoActual.getPuntuacion();
             Jugador jugador = puntuacion.getJugador();
-            System.out.println("Jugador: " + jugador.getNombre() + ", Puntuación: " + puntuacion.getPuntuacion());
+            System.out.println("Jugador: " + jugador.getNombre() + ", Puntuación: " 
+                    + puntuacion.getPuntuacion());
             nodoActual = nodoActual.getSiguiente();
         }
-    }
+        System.out.println( "-------------------------------");
+    }*/
 }
