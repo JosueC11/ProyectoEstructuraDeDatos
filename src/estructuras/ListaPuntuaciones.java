@@ -1,4 +1,4 @@
-package overcooked.fide;
+package estructuras;
 
 import javax.swing.JOptionPane;
 

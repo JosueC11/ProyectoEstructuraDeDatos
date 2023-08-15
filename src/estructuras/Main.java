@@ -1,6 +1,7 @@
 
-package overcooked.fide;
+package estructuras;
 
+import vistas.PantallaInicio;
 import javax.swing.JOptionPane;
 
 public class Main{

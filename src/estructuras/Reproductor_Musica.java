@@ -1,4 +1,4 @@
-package overcooked.fide;
+package estructuras;
 /**
  *
  * @author Dennis
@@ -18,7 +18,7 @@ public class Reproductor_Musica implements Runnable
         try 
         {
             cancion = AudioSystem.getClip();
-            cancion.open(AudioSystem.getAudioInputStream(getClass().getResourceAsStream("feid.wav")));
+            cancion.open(AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/cancion/feid.wav")));
             controladorVolumen = (FloatControl) cancion.getControl(FloatControl.Type.MASTER_GAIN);
             controladorVolumen.setValue(-30.0f);
             reproduciendo = false;

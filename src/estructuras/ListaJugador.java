@@ -1,4 +1,4 @@
-package overcooked.fide;
+package estructuras;
 
 
 public class ListaJugador 

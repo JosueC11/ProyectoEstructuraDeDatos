@@ -1,6 +1,6 @@
+package vistas;
 
-package overcooked.fide;
-
+import estructuras.*;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -11,7 +11,8 @@ public class PantallaInicio extends javax.swing.JFrame {
     private ListaJugador listaJugadores;
     private ListaPuntuaciones listaPuntuaciones;
     
-    public PantallaInicio(ListaJugador listaJugadores, ListaPuntuaciones listaPuntuaciones) 
+    public PantallaInicio(ListaJugador listaJugadores, 
+            ListaPuntuaciones listaPuntuaciones) 
     {
         this.listaJugadores = listaJugadores;
         this.listaPuntuaciones = listaPuntuaciones;
@@ -19,7 +20,8 @@ public class PantallaInicio extends javax.swing.JFrame {
         activarCancionInicio();
         activarImagenes(listaJugadores);
         
-        Jugador jugador_predeterminado = new Jugador("Jugador1", "M", true);
+        Jugador jugador_predeterminado = new Jugador("Jugador1", 
+                                                    "M", true);
         listaJugadores.agregarJugador(jugador_predeterminado);
         
         // Setear posición a la pantalla
@@ -62,10 +64,10 @@ public class PantallaInicio extends javax.swing.JFrame {
 
         // Utilizamos el parámetro listaJugadores para obtener el último jugador
         
-        Icon header = new ImageIcon(new ImageIcon
-        (getClass().getResource("overcookedheader.png")).getImage().getScaledInstance
-        (lblImageHeader.getWidth(), lblImageHeader.getHeight(), 
-        0));
+        Icon header = new ImageIcon(new ImageIcon(getClass()
+        .getResource("/imagenesJuego/overcookedHeaderHome.png")).getImage()
+        .getScaledInstance(lblImageHeader.getWidth(), 
+        lblImageHeader.getHeight(), 0));
        
         // Se le setea el Icon a el label
         lblImageHeader.setIcon(header);
@@ -74,17 +76,15 @@ public class PantallaInicio extends javax.swing.JFrame {
 
         if (ultimoJugador == null || ultimoJugador.getIdentificado() == null) 
         {
-
-            Icon user = new ImageIcon(new ImageIcon(
-    getClass().getResource("user.png")).getImage().getScaledInstance
-        (lblImageUser.getWidth(), lblImageUser.getHeight(), 0));
+            Icon user = new ImageIcon(new ImageIcon(getClass()
+            .getResource("/imagenesJuego/user.png")).getImage()
+            .getScaledInstance(lblImageUser.getWidth(), 
+            lblImageUser.getHeight(), 0));
 
             lblImageUser.setIcon(user);
-
+            
         } else {
-
             actualizarImagenes();
-
         }  
     }
     
@@ -97,18 +97,18 @@ public class PantallaInicio extends javax.swing.JFrame {
         if(genero != null && genero.equalsIgnoreCase("M")){
             
            Icon manPlayer = new ImageIcon(new ImageIcon
-            (getClass().getResource("manPlayer.png")).getImage().getScaledInstance
-            (lblImageUser.getWidth(), lblImageUser.getHeight(), 
-            0)); 
+            (getClass().getResource("/imagenesJuego/manPlayer.png")).getImage()
+            .getScaledInstance(lblImageUser.getWidth(), 
+            lblImageUser.getHeight(), 0)); 
            
            lblImageUser.setIcon(manPlayer);  
            
         }else if(genero != null && genero.equalsIgnoreCase("F")){
             
             Icon womanPlayer = new ImageIcon(new ImageIcon
-            (getClass().getResource("womanPlayer.png")).getImage().getScaledInstance
-            (lblImageUser.getWidth(), lblImageUser.getHeight(), 
-            0));
+            (getClass().getResource("/imagenesJuego/womanPlayer.png")).getImage()
+            .getScaledInstance(lblImageUser.getWidth(), 
+            lblImageUser.getHeight(), 0));
             
             lblImageUser.setIcon(womanPlayer);  
             
@@ -122,32 +122,31 @@ public class PantallaInicio extends javax.swing.JFrame {
             if(m.isSelected() || f.isSelected()){
                 
                 if (m.isSelected()) {
-                    Jugador jugadorM = new Jugador(txtNombre.getText(), "M", true);
+                    Jugador jugadorM = new Jugador(txtNombre.getText(), 
+                            "M", true);
                     listaJugadores.agregarJugador(jugadorM);
                 } else {
-                    Jugador jugadorF = new Jugador(txtNombre.getText(), "F", true);
+                    Jugador jugadorF = new Jugador(txtNombre.getText(), 
+                            "F", true);
                     listaJugadores.agregarJugador(jugadorF);
                 }
 
-                JOptionPane.showMessageDialog(null, "Guardado Correctamente");
+                JOptionPane.showMessageDialog(null, 
+                        "Guardado Correctamente");
                 
                 actualizarImagenes();
                 
-            }else{
-                
+            }else{              
                 JOptionPane.showMessageDialog
-            (null,"Debe llenar el campo de "
-                            + "genero para continuar");
-                
+                            (null,"Debe llenar el campo de "
+                            + "genero para continuar");               
             }
         }
         else
-        {
-            
+        {           
             JOptionPane.showMessageDialog
             (null,"Debe llenar el campo de nombre "
-                            + " para continuar");
-        
+                            + " para continuar");       
         } 
     }
 
@@ -161,17 +160,24 @@ public class PantallaInicio extends javax.swing.JFrame {
     private void initComponents() {
 
         grupoGenero = new javax.swing.ButtonGroup();
-        lblImageHeader = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        lblImageUser = new javax.swing.JLabel();
         btnJugar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
-        lblImageUser = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JTextField();
         m = new javax.swing.JRadioButton();
         f = new javax.swing.JRadioButton();
         btnGuardar = new javax.swing.JButton();
+        txtNombre = new javax.swing.JTextField();
+        lblImageHeader = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblImageUser.setBackground(new java.awt.Color(255, 153, 153));
+        lblImageUser.setForeground(new java.awt.Color(255, 153, 153));
+        jPanel1.add(lblImageUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, 110, 90));
 
         btnJugar.setBackground(new java.awt.Color(0, 153, 153));
         btnJugar.setText("Jugar");
@@ -180,6 +186,7 @@ public class PantallaInicio extends javax.swing.JFrame {
                 btnJugarActionPerformed(evt);
             }
         });
+        jPanel1.add(btnJugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 600, 150, -1));
 
         btnSalir.setBackground(new java.awt.Color(255, 0, 51));
         btnSalir.setText("Salir");
@@ -188,13 +195,13 @@ public class PantallaInicio extends javax.swing.JFrame {
                 btnSalirActionPerformed(evt);
             }
         });
-
-        lblImageUser.setBackground(new java.awt.Color(255, 153, 153));
-        lblImageUser.setForeground(new java.awt.Color(255, 153, 153));
+        jPanel1.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 610, 150, -1));
 
         jLabel1.setText("Nombre:");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 540, 50, 30));
 
         m.setText("M");
+        jPanel1.add(m, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 600, -1, -1));
 
         f.setText("F");
         f.addActionListener(new java.awt.event.ActionListener() {
@@ -202,6 +209,7 @@ public class PantallaInicio extends javax.swing.JFrame {
                 fActionPerformed(evt);
             }
         });
+        jPanel1.add(f, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 600, -1, -1));
 
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -209,70 +217,28 @@ public class PantallaInicio extends javax.swing.JFrame {
                 btnGuardarActionPerformed(evt);
             }
         });
+        jPanel1.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 600, -1, -1));
+        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 540, 230, 30));
+        jPanel1.add(lblImageHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1210, 660));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(lblImageHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 1041, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(349, 349, 349)
-                        .addComponent(btnJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(m)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnGuardar)
-                                    .addComponent(f))))
-                        .addGap(30, 30, 30))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblImageUser, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44))))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(lblImageHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(btnJugar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSalir)
-                        .addGap(22, 22, 22))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(m)
-                            .addComponent(f))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnGuardar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblImageUser, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 28, Short.MAX_VALUE))))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        JOptionPane.showMessageDialog(null,"Muchas gracias por jugar!","Saliendo....",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"Muchas gracias "
+                + "por jugar!","Saliendo....",
+                JOptionPane.INFORMATION_MESSAGE);
         
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
@@ -283,7 +249,8 @@ public class PantallaInicio extends javax.swing.JFrame {
 
         if (ultimoJugador.getIdentificado() == null) 
         {
-            JOptionPane.showMessageDialog(null, "Debe Identificarse antes de jugar");
+            JOptionPane.showMessageDialog(null, 
+                    "Debe Identificarse antes de jugar");
         } 
         else 
         {
@@ -312,6 +279,7 @@ public class PantallaInicio extends javax.swing.JFrame {
     private javax.swing.JRadioButton f;
     private javax.swing.ButtonGroup grupoGenero;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblImageHeader;
     private javax.swing.JLabel lblImageUser;
     private javax.swing.JRadioButton m;

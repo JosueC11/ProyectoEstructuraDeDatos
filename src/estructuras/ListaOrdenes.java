@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package overcooked.fide;
+package estructuras;
 
 import java.util.Random;
 
@@ -79,18 +79,31 @@ public class ListaOrdenes {
         }
     }
     
+    public Orden devolverOrden(String nombreOrden){
+        
+        NodoLista aux = cabeza;
+        
+        if(cabeza != null){
+            
+            while(!aux.getOrden().getNombre().equals(nombreOrden)){           
+                aux = aux.getSiguiente();  
+            }
+        }
+        return aux.getOrden();
+    }
+    
     public void llenarLista(){
         
-        inserta(new Orden("Hamburguesa de carne",true,true,
+        inserta(new Orden("hamburguesaDeCarne",true,true,
                 false,false,2,0));
-        inserta(new Orden("Hamburguesa con queso",true,true,
+        inserta(new Orden("hamburguesaConQueso",true,true,
                 true,false,3,1));
-        inserta(new Orden("Hamburguesa clásica",true,true,
+        inserta(new Orden("hamburguesaClasica",true,true,
                 true,true,4,2));
   
     }
     
-    public Orden devolver(){
+    public Orden devolverDeCola(){
         
         return cola.atiende();
     }

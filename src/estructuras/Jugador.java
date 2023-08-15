@@ -1,5 +1,5 @@
 
-package overcooked.fide;
+package estructuras;
 
 
 public class Jugador 
