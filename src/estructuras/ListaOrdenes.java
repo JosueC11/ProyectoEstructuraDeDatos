@@ -100,7 +100,6 @@ public class ListaOrdenes {
                 true,false,3,1));
         inserta(new Orden("hamburguesaClasica",true,true,
                 true,true,4,2));
-  
     }
     
     public Orden devolverDeCola(){

@@ -18,20 +18,20 @@ public class PantallaInicio extends javax.swing.JFrame {
         this.listaPuntuaciones = listaPuntuaciones;
         initComponents();
         activarCancionInicio();
-        activarImagenes(listaJugadores);
+        activarImagenes();
         
-        Jugador jugador_predeterminado = new Jugador("Jugador1", 
-                                                    "M", true);
-        listaJugadores.agregarJugador(jugador_predeterminado);
-        
-        // Setear posición a la pantalla
-        
+        // Setear posición a la pantalla        
         setLocationRelativeTo(null);
         setResizable(false);   
         
         grupoGenero.add(f);
         grupoGenero.add(m);
-
+        
+        setJugadorInicial();
+    }
+    
+    public void setJugadorInicial(){
+        
         Jugador ultimoJugador = listaJugadores.obtenerUltimoJugadorSesion();
 
         txtNombre.setText(ultimoJugador.getNombre());
@@ -60,7 +60,7 @@ public class PantallaInicio extends javax.swing.JFrame {
         }
     }
     
-    public final void activarImagenes(ListaJugador listaJugadores){
+    public final void activarImagenes(){
 
         // Utilizamos el parámetro listaJugadores para obtener el último jugador
         
@@ -70,25 +70,10 @@ public class PantallaInicio extends javax.swing.JFrame {
         lblImageHeader.getHeight(), 0));
        
         // Se le setea el Icon a el label
-        lblImageHeader.setIcon(header);
-        
-        Jugador ultimoJugador = listaJugadores.obtenerUltimoJugadorSesion();
-
-        if (ultimoJugador == null || ultimoJugador.getIdentificado() == null) 
-        {
-            Icon user = new ImageIcon(new ImageIcon(getClass()
-            .getResource("/imagenesJuego/user.png")).getImage()
-            .getScaledInstance(lblImageUser.getWidth(), 
-            lblImageUser.getHeight(), 0));
-
-            lblImageUser.setIcon(user);
-            
-        } else {
-            actualizarImagenes();
-        }  
+        lblImageHeader.setIcon(header);            
     }
     
-    public void actualizarImagenes(){
+    public void actualizarImagenes(ListaJugador listaJugadores){
         
         Jugador ultimoJugador = listaJugadores.obtenerUltimoJugadorSesion();
         
@@ -134,7 +119,7 @@ public class PantallaInicio extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, 
                         "Guardado Correctamente");
                 
-                actualizarImagenes();
+                actualizarImagenes(listaJugadores);
                 
             }else{              
                 JOptionPane.showMessageDialog
@@ -211,6 +196,7 @@ public class PantallaInicio extends javax.swing.JFrame {
         });
         jPanel1.add(f, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 600, -1, -1));
 
+        btnGuardar.setBackground(new java.awt.Color(0, 153, 153));
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -240,7 +226,7 @@ public class PantallaInicio extends javax.swing.JFrame {
                 + "por jugar!","Saliendo....",
                 JOptionPane.INFORMATION_MESSAGE);
         
-        this.dispose();
+        System.exit(0);
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
@@ -267,7 +253,7 @@ public class PantallaInicio extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         iniciarSesion();
-        activarImagenes(listaJugadores);      
+        actualizarImagenes(listaJugadores);      
     }//GEN-LAST:event_btnGuardarActionPerformed
 
    

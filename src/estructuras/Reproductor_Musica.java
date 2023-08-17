@@ -19,7 +19,7 @@ public class Reproductor_Musica implements Runnable
         {
             cancion = AudioSystem.getClip();
             cancion.open(AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/cancion/feid.wav")));
-            controladorVolumen = (FloatControl) cancion.getControl(FloatControl.Type.MASTER_GAIN);
+            controladorVolumen = (FloatControl)cancion.getControl(FloatControl.Type.MASTER_GAIN);
             controladorVolumen.setValue(-30.0f);
             reproduciendo = false;
         } 
@@ -43,31 +43,5 @@ public class Reproductor_Musica implements Runnable
         reproduciendo = true;
         cancion.start();
         cancion.loop(Clip.LOOP_CONTINUOUSLY);
-    }
-
-    public void pausar() 
-    {
-        if (cancion != null && cancion.isRunning()) 
-        {
-            cancion.stop();
-            reproduciendo = false;
-        }
-    }
-
-    public void reanudar() 
-    {
-        if (cancion != null && !reproduciendo) 
-        {
-            cancion.start();
-            reproduciendo = true;
-        }
-    }
-
-    public void ajustarVolumen(float valor) 
-    {
-        if (controladorVolumen != null) 
-        {
-            controladorVolumen.setValue(valor);
-        }
     }
 }

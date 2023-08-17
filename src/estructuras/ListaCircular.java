@@ -27,39 +27,26 @@ public class ListaCircular{
         ultimo.setNext(cabeza);
     }
     
-    public void rotar(){
-        
-        NodoLC aux = cabeza;
-        
-        while (aux.getNext() != ultimo) {
-            aux = aux.getNext();
-        }
-
-        cabeza = cabeza.getNext();
-        ultimo = ultimo.getNext();
-        ultimo.setNext(cabeza);
-    }  
-    
     public String imprimir(){
         
         NodoLC aux = cabeza;
-        String s = "";
+        String ingrediente = "";
         
         if(aux != null){
             
             if(indice == 0){
-                s += aux.getDato().getNombre();
+                ingrediente += aux.getDato().getNombre();
                 indice++;
                 siguiente = aux.getNext();
             }else{
                 while(aux != siguiente){        
                     aux = aux.getNext();             
                 }
-                s += aux.getDato().getNombre();
+                ingrediente += aux.getDato().getNombre();
                 siguiente = aux.getNext();
             }
         } 
-        return s;
+        return ingrediente;
     }
 }
     

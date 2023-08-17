@@ -3,8 +3,7 @@ package estructuras;
 
 
 public class Jugador 
-{
-    
+{   
     private String nombre;
     private String genero;
     private Boolean identificado;

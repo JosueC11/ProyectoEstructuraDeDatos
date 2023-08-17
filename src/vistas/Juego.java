@@ -14,9 +14,6 @@ public final class Juego extends javax.swing.JFrame {
     ListaOrdenes lista = new ListaOrdenes(); 
     
     ListaCircular  listaCircular = new ListaCircular();
-
-    DefaultTableModel modeloListado;
-    String[] info = new String[2];
     
     private Timer tiempoOrdenes;
     private Timer tiempoJuego;
@@ -65,12 +62,7 @@ public final class Juego extends javax.swing.JFrame {
         //setear el delay y la tarea a realizar 
         tiempoJuego = new Timer(1,temporizadorJuego);
         tiempoJuego.start(); 
-        
-        modeloListado = new DefaultTableModel();
-        modeloListado.addColumn("Jugador");
-        modeloListado.addColumn("Puntuación");
-        
-        puntuaciones_table.setModel(modeloListado);
+
     }
     
     //Tarea de generar ordenes
@@ -141,15 +133,7 @@ public final class Juego extends javax.swing.JFrame {
         .getScaledInstance(lblHeader.getWidth(), 
         lblHeader.getHeight(), 0));
         
-        lblHeader.setIcon(header);
-        
-//        Icon ordenCreadaBlanco = new ImageIcon(new ImageIcon
-//        (getClass().getResource("/imagenesOrdenes/ordenBlanco.png"))
-//        .getImage().getScaledInstance(lblCreandoOrden.getWidth(), 
-//        lblCreandoOrden.getHeight(), 0));
-//        
-//        lblCreandoOrden.setIcon(ordenCreadaBlanco);
-        
+        lblHeader.setIcon(header);           
     }
     
     //Genera una orden al inicio del juego
@@ -209,47 +193,48 @@ public final class Juego extends javax.swing.JFrame {
     public void llenarListaCircular(){
         
         listaCircular.insertar(new Ingrediente("lechuga"));
+        listaCircular.insertar(new Ingrediente("cebolla")); 
+        listaCircular.insertar(new Ingrediente("tomate"));
         listaCircular.insertar(new Ingrediente("pan"));
         listaCircular.insertar(new Ingrediente("queso"));
         listaCircular.insertar(new Ingrediente("carne"));
-        listaCircular.insertar(new Ingrediente("aguacate"));
+        listaCircular.insertar(new Ingrediente("aguacate"));      
     }
     
     public void imprimirIngredientes(){
         
-        int indice = 0;
-        String nombre = listaCircular.imprimir();
-        
-        while(indice < 5){
+        int indice = 6;
+
+        while(indice > 0){
             
-            nombre = listaCircular.imprimir();
+            String nombre = listaCircular.imprimir();
             
             Icon ingrediente = new ImageIcon(new ImageIcon(getClass()
             .getResource("/imagenesIngredientes/"+nombre+".png")).getImage()
             .getScaledInstance(lblIngre1.getWidth(), 
             lblIngre1.getHeight(),0));
                   
-            if(indice == 0){
+            if(indice == 1){
                 lblIngre1.setIcon(ingrediente);
                 lblIngre1.setText(nombre);       
             }
-            if(indice == 1){
+            if(indice == 2){
                 lblIngre2.setIcon(ingrediente);
                 lblIngre2.setText(nombre);              
             }
-            if(indice == 2){
+            if(indice == 3){
                 lblIngre3.setIcon(ingrediente);
                 lblIngre3.setText(nombre);              
             }
-            if(indice == 3){ 
+            if(indice == 4){ 
                 lblIngre4.setIcon(ingrediente);
                 lblIngre4.setText(nombre);              
             }
-            if(indice == 4){ 
+            if(indice == 5){ 
                 lblIngre5.setIcon(ingrediente);
                 lblIngre5.setText(nombre);            
             }
-            indice++;
+            indice--;
         }
     }
     
@@ -302,17 +287,20 @@ public final class Juego extends javax.swing.JFrame {
             case "aguacate" -> {
                 lblAguacate.setText(ingrediente);
                 lblAguacate.setIcon(iconIngrediente);
-            }       
+            }    
+            case "tomate" -> {
+                lblTomate.setText(ingrediente);
+                lblTomate.setIcon(iconIngrediente);
+            } 
+            case "cebolla" -> {
+                lblCebolla.setText(ingrediente);
+                lblCebolla.setIcon(iconIngrediente);
+            } 
         }      
     }
     
     public void terminarOrden(){
-        
-        Icon ordenBlanco = new ImageIcon(new ImageIcon(getClass()
-        .getResource("/imagenesOrdenes/ordenBlanco.png")).getImage()
-        .getScaledInstance(labelOrden1.getWidth(), 
-        labelOrden1.getHeight(),0));
-               
+      
         revisarOrden();
         
         labelOrden1.setText("");
@@ -339,8 +327,13 @@ public final class Juego extends javax.swing.JFrame {
             labelOrden2.setText(labelOrden3.getText());
             labelOrden3.setText("");
             lblHamburguesaCreando.setText(labelOrden1.getText());
-        }  
+        }   
 
+        limpiarOrdenCreada();       
+    }
+    
+    public void limpiarOrdenCreada(){
+        
         lblPan.setIcon(null);
         lblPan.setText("");
         lblCarne.setIcon(null);
@@ -351,6 +344,10 @@ public final class Juego extends javax.swing.JFrame {
         lblLechuga.setText("");
         lblAguacate.setIcon(null);
         lblAguacate.setText("");
+        lblTomate.setIcon(null);
+        lblTomate.setText("");
+        lblCebolla.setIcon(null);
+        lblCebolla.setText("");    
     }
     
     public void revisarOrden(){
@@ -364,6 +361,8 @@ public final class Juego extends javax.swing.JFrame {
         Boolean queso = ordenRevisar.getQueso();
         Boolean lechuga = ordenRevisar.getLechuga();
         Boolean aguacate = false;
+        Boolean tomate= false;
+        Boolean cebolla = false;
         
         switch(ordenRevisar.getNombre()){
             case "hamburguesaDeCarne" -> {
@@ -372,7 +371,9 @@ public final class Juego extends javax.swing.JFrame {
                    carne == !lblCarne.getText().isEmpty() &&
                    queso != lblQueso.getText().isEmpty() &&
                    lechuga != lblLechuga.getText().isEmpty() &&
-                   aguacate != lblAguacate.getText().isEmpty()){
+                   aguacate != lblAguacate.getText().isEmpty() &&
+                   tomate != lblTomate.getText().isEmpty() &&
+                   cebolla != lblCebolla.getText().isEmpty()){
                     
                    puntuacion += 5;    
                 }
@@ -383,7 +384,9 @@ public final class Juego extends javax.swing.JFrame {
                    carne == !lblCarne.getText().isEmpty() &&
                    queso == !lblQueso.getText().isEmpty() &&
                    lechuga != lblLechuga.getText().isEmpty() &&
-                   aguacate != lblAguacate.getText().isEmpty()){
+                   aguacate != lblAguacate.getText().isEmpty() &&
+                   tomate != lblTomate.getText().isEmpty() &&
+                   cebolla != lblCebolla.getText().isEmpty()){
                     
                    puntuacion += 10;    
                 }
@@ -394,7 +397,9 @@ public final class Juego extends javax.swing.JFrame {
                    carne == !lblCarne.getText().isEmpty() &&
                    queso == !lblQueso.getText().isEmpty() &&
                    lechuga == !lblLechuga.getText().isEmpty() &&
-                   aguacate != lblAguacate.getText().isEmpty()){
+                   aguacate != lblAguacate.getText().isEmpty() &&
+                   tomate != lblTomate.getText().isEmpty() &&
+                   cebolla != lblCebolla.getText().isEmpty()){
                     
                    puntuacion += 15;    
                 }    
@@ -413,7 +418,8 @@ public final class Juego extends javax.swing.JFrame {
         JOptionPane.showMessageDialog
         (null,"El juego terminó");
         
-        PantallaInicio pantallaInicio = new PantallaInicio(listaJugadores, listaPuntuaciones);
+        PantallaInicio pantallaInicio = new PantallaInicio(listaJugadores, 
+                                                        listaPuntuaciones);
         pantallaInicio.setVisible(true);
         this.dispose();
     }
@@ -453,14 +459,14 @@ public final class Juego extends javax.swing.JFrame {
         Elegir3 = new javax.swing.JButton();
         Elegir4 = new javax.swing.JButton();
         Elegir5 = new javax.swing.JButton();
-        lblCreandoOrden = new javax.swing.JLabel();
         lblHamburguesaCreando = new javax.swing.JLabel();
         lblPuntuacion = new javax.swing.JLabel();
         lblTituloOrdenesCreadas = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        puntuaciones_table = new javax.swing.JTable();
         txtPuntuacion = new javax.swing.JLabel();
         txtTiempo = new javax.swing.JLabel();
+        lblTomate = new javax.swing.JLabel();
+        lblCebolla = new javax.swing.JLabel();
+        lblCreandoOrden = new javax.swing.JLabel();
         lblHeader = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -473,105 +479,109 @@ public final class Juego extends javax.swing.JFrame {
         jLabel1.setText("OverCookedFide");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 190, 50));
 
-        salirMenuPrincipal_Juego.setText("Salir al menú");
+        salirMenuPrincipal_Juego.setBackground(new java.awt.Color(204, 51, 0));
+        salirMenuPrincipal_Juego.setText("Salir del Juego");
         salirMenuPrincipal_Juego.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 salirMenuPrincipal_JuegoActionPerformed(evt);
             }
         });
-        jPanel1.add(salirMenuPrincipal_Juego, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 670, -1, -1));
+        jPanel1.add(salirMenuPrincipal_Juego, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 810, -1, -1));
 
         campo_nombre.setBackground(new java.awt.Color(255, 255, 255));
         campo_nombre.setForeground(new java.awt.Color(255, 255, 255));
         campo_nombre.setText("Jugador:");
-        jPanel1.add(campo_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(1430, 10, -1, 30));
+        jPanel1.add(campo_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 10, -1, 30));
 
         nombre_jugador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nombre_jugadorActionPerformed(evt);
             }
         });
-        jPanel1.add(nombre_jugador, new org.netbeans.lib.awtextra.AbsoluteConstraints(1490, 10, 180, -1));
+        jPanel1.add(nombre_jugador, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 10, 180, -1));
 
+        btnTerminarOrden.setBackground(new java.awt.Color(204, 153, 0));
         btnTerminarOrden.setText("Terminar Orden");
         btnTerminarOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTerminarOrdenActionPerformed(evt);
             }
         });
-        jPanel1.add(btnTerminarOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 200, 130, -1));
+        jPanel1.add(btnTerminarOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 230, 150, 40));
 
         labelTemporizador.setBackground(new java.awt.Color(255, 255, 255));
         labelTemporizador.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         labelTemporizador.setForeground(new java.awt.Color(255, 255, 255));
         jPanel1.add(labelTemporizador, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 0, 100, 60));
-        jPanel1.add(labelOrden2, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 60, 110, 130));
-        jPanel1.add(labelOrden3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 60, 110, 130));
-        jPanel1.add(labelOrden1, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 60, 110, 130));
+        jPanel1.add(labelOrden2, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 80, 110, 130));
+        jPanel1.add(labelOrden3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 80, 110, 130));
+        jPanel1.add(labelOrden1, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 80, 110, 130));
         labelOrden1.getAccessibleContext().setAccessibleDescription("");
 
-        jPanel1.add(lblIngre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 390, 100, 110));
-        jPanel1.add(lblIngre3, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 390, 100, 110));
-        jPanel1.add(lblIngre4, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 390, 100, 110));
-        jPanel1.add(lblIngre5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 390, 100, 110));
-        jPanel1.add(lblIngre1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 390, 100, 110));
+        jPanel1.add(lblIngre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 460, 100, 110));
+        jPanel1.add(lblIngre3, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 460, 100, 110));
+        jPanel1.add(lblIngre4, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 460, 100, 110));
+        jPanel1.add(lblIngre5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 450, 100, 110));
+        jPanel1.add(lblIngre1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 460, 100, 110));
         jPanel1.add(lblPan, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 70, 60));
         jPanel1.add(lblCarne, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 320, 70, 60));
         jPanel1.add(lblQueso, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 400, 70, 60));
         jPanel1.add(lblAguacate, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 570, 70, 60));
         jPanel1.add(lblLechuga, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 490, 70, 60));
 
+        jButton1.setBackground(new java.awt.Color(0, 153, 153));
         jButton1.setText("◀");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 450, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 510, -1, -1));
 
+        Elegir1.setBackground(new java.awt.Color(0, 153, 153));
         Elegir1.setText("Elegir");
         Elegir1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Elegir1ActionPerformed(evt);
             }
         });
-        jPanel1.add(Elegir1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 520, 100, -1));
+        jPanel1.add(Elegir1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 590, 100, -1));
 
+        Elegir2.setBackground(new java.awt.Color(0, 153, 153));
         Elegir2.setText("Elegir");
         Elegir2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Elegir2ActionPerformed(evt);
             }
         });
-        jPanel1.add(Elegir2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 520, 100, -1));
+        jPanel1.add(Elegir2, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 590, 100, -1));
 
+        Elegir3.setBackground(new java.awt.Color(0, 153, 153));
         Elegir3.setText("Elegir");
         Elegir3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Elegir3ActionPerformed(evt);
             }
         });
-        jPanel1.add(Elegir3, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 520, 100, -1));
+        jPanel1.add(Elegir3, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 590, 100, -1));
 
+        Elegir4.setBackground(new java.awt.Color(0, 153, 153));
         Elegir4.setText("Elegir");
         Elegir4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Elegir4ActionPerformed(evt);
             }
         });
-        jPanel1.add(Elegir4, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 520, 100, -1));
+        jPanel1.add(Elegir4, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 590, 100, -1));
 
+        Elegir5.setBackground(new java.awt.Color(0, 153, 153));
         Elegir5.setText("Elegir");
         Elegir5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Elegir5ActionPerformed(evt);
             }
         });
-        jPanel1.add(Elegir5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 520, 100, -1));
-
-        lblCreandoOrden.setBackground(new java.awt.Color(255, 255, 255));
-        lblCreandoOrden.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(lblCreandoOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 180, 360));
+        jPanel1.add(Elegir5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 590, 100, -1));
 
         lblHamburguesaCreando.setBackground(new java.awt.Color(255, 255, 255));
         lblHamburguesaCreando.setForeground(new java.awt.Color(255, 255, 255));
@@ -587,21 +597,6 @@ public final class Juego extends javax.swing.JFrame {
         lblTituloOrdenesCreadas.setText("Creando su Orden - Ingredientes");
         jPanel1.add(lblTituloOrdenesCreadas, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, -1, -1));
 
-        puntuaciones_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(puntuaciones_table);
-
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 60, -1, -1));
-
         txtPuntuacion.setBackground(new java.awt.Color(255, 255, 255));
         txtPuntuacion.setForeground(new java.awt.Color(255, 255, 255));
         txtPuntuacion.setText("Puntuación:");
@@ -611,7 +606,13 @@ public final class Juego extends javax.swing.JFrame {
         txtTiempo.setForeground(new java.awt.Color(255, 255, 255));
         txtTiempo.setText("Tiempo Restante:");
         jPanel1.add(txtTiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 20, -1, -1));
-        jPanel1.add(lblHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1690, 710));
+        jPanel1.add(lblTomate, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 750, 70, 60));
+        jPanel1.add(lblCebolla, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 660, 70, 60));
+
+        lblCreandoOrden.setBackground(new java.awt.Color(255, 255, 255));
+        lblCreandoOrden.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel1.add(lblCreandoOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 180, 620));
+        jPanel1.add(lblHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 850));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -627,45 +628,44 @@ public final class Juego extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void salirMenuPrincipal_JuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirMenuPrincipal_JuegoActionPerformed
-        PantallaInicio volvermenu = new PantallaInicio(listaJugadores, listaPuntuaciones); 
-        volvermenu.setVisible(true); 
-        volvermenu.setLocationRelativeTo(null);
-        this.dispose();
-    }//GEN-LAST:event_salirMenuPrincipal_JuegoActionPerformed
-
-    private void nombre_jugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombre_jugadorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nombre_jugadorActionPerformed
-
-    private void btnTerminarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTerminarOrdenActionPerformed
-        terminarOrden(); 
-    }//GEN-LAST:event_btnTerminarOrdenActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        imprimirIngredientes();           
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void Elegir5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Elegir5ActionPerformed
-        elegirIngrediente(5); 
+        elegirIngrediente(5);
     }//GEN-LAST:event_Elegir5ActionPerformed
 
-    private void Elegir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Elegir1ActionPerformed
-        elegirIngrediente(1);
-    }//GEN-LAST:event_Elegir1ActionPerformed
+    private void Elegir4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Elegir4ActionPerformed
+        elegirIngrediente(4);
+    }//GEN-LAST:event_Elegir4ActionPerformed
 
     private void Elegir3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Elegir3ActionPerformed
         elegirIngrediente(3);
     }//GEN-LAST:event_Elegir3ActionPerformed
 
     private void Elegir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Elegir2ActionPerformed
-        elegirIngrediente(2); 
+        elegirIngrediente(2);
     }//GEN-LAST:event_Elegir2ActionPerformed
 
-    private void Elegir4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Elegir4ActionPerformed
-        elegirIngrediente(4); 
-    }//GEN-LAST:event_Elegir4ActionPerformed
+    private void Elegir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Elegir1ActionPerformed
+        elegirIngrediente(1);
+    }//GEN-LAST:event_Elegir1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        imprimirIngredientes();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnTerminarOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTerminarOrdenActionPerformed
+        terminarOrden();
+    }//GEN-LAST:event_btnTerminarOrdenActionPerformed
+
+    private void nombre_jugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombre_jugadorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nombre_jugadorActionPerformed
+
+    private void salirMenuPrincipal_JuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirMenuPrincipal_JuegoActionPerformed
+        PantallaInicio volvermenu = new PantallaInicio(listaJugadores, listaPuntuaciones);
+        volvermenu.setVisible(true);
+        volvermenu.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_salirMenuPrincipal_JuegoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -679,13 +679,13 @@ public final class Juego extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelOrden1;
     private javax.swing.JLabel labelOrden2;
     private javax.swing.JLabel labelOrden3;
     private javax.swing.JLabel labelTemporizador;
     private javax.swing.JLabel lblAguacate;
     private javax.swing.JLabel lblCarne;
+    private javax.swing.JLabel lblCebolla;
     private javax.swing.JLabel lblCreandoOrden;
     private javax.swing.JLabel lblHamburguesaCreando;
     private javax.swing.JLabel lblHeader;
@@ -699,8 +699,8 @@ public final class Juego extends javax.swing.JFrame {
     private javax.swing.JLabel lblPuntuacion;
     private javax.swing.JLabel lblQueso;
     private javax.swing.JLabel lblTituloOrdenesCreadas;
+    private javax.swing.JLabel lblTomate;
     private javax.swing.JTextField nombre_jugador;
-    private javax.swing.JTable puntuaciones_table;
     private javax.swing.JButton salirMenuPrincipal_Juego;
     private javax.swing.JLabel txtPuntuacion;
     private javax.swing.JLabel txtTiempo;
