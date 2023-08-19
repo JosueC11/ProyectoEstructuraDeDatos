@@ -37,30 +37,25 @@ public class ListaPuntuaciones
                 nuevoNodo.setSiguiente(actual);
             }
         }
-    }    
+    }     
     
-    public void verListaPuntuaciones() {
+    public void mostrarPuntuaciones()
+    {
         NodoLista actual = primerNodo;
+
+        if (actual == null) {
+            JOptionPane.showMessageDialog(null, "No hay puntuaciones registradas.");
+            return;
+        }
+
+        StringBuilder mensaje = new StringBuilder("Puntuaciones:\n");
 
         while (actual != null) {
             Puntuacion puntuacion = actual.getPuntuacion();
-            System.out.println("Jugador: " + puntuacion.getNombre() + ", Puntuación: " + puntuacion.getPuntuacion());
+            mensaje.append(puntuacion.getNombre()).append(": ").append(puntuacion.getPuntuacion()).append("\n");
             actual = actual.getSiguiente();
         }
+
+        JOptionPane.showMessageDialog(null, mensaje.toString());
     }
-    
-    /*public void mostrarListaPuntuaciones() 
-    {
-        NodoLista nodoActual = primerNodo;
-        System.out.println("-------------------------------");
-        while (nodoActual != null)
-        {
-            Puntuacion puntuacion = nodoActual.getPuntuacion();
-            Jugador jugador = puntuacion.getJugador();
-            System.out.println("Jugador: " + jugador.getNombre() + ", Puntuación: " 
-                    + puntuacion.getPuntuacion());
-            nodoActual = nodoActual.getSiguiente();
-        }
-        System.out.println( "-------------------------------");
-    }*/
 }

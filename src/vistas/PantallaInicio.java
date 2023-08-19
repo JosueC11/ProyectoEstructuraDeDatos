@@ -153,6 +153,7 @@ public class PantallaInicio extends javax.swing.JFrame {
         m = new javax.swing.JRadioButton();
         f = new javax.swing.JRadioButton();
         btnGuardar = new javax.swing.JButton();
+        bttn_puntuaciones = new javax.swing.JButton();
         txtNombre = new javax.swing.JTextField();
         lblImageHeader = new javax.swing.JLabel();
 
@@ -165,6 +166,7 @@ public class PantallaInicio extends javax.swing.JFrame {
         jPanel1.add(lblImageUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, 110, 90));
 
         btnJugar.setBackground(new java.awt.Color(0, 153, 153));
+        btnJugar.setForeground(new java.awt.Color(255, 255, 255));
         btnJugar.setText("Jugar");
         btnJugar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -174,6 +176,7 @@ public class PantallaInicio extends javax.swing.JFrame {
         jPanel1.add(btnJugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 600, 150, -1));
 
         btnSalir.setBackground(new java.awt.Color(255, 0, 51));
+        btnSalir.setForeground(new java.awt.Color(255, 255, 255));
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,12 +185,15 @@ public class PantallaInicio extends javax.swing.JFrame {
         });
         jPanel1.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 610, 150, -1));
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Nombre:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 540, 50, 30));
 
+        m.setForeground(new java.awt.Color(0, 0, 0));
         m.setText("M");
         jPanel1.add(m, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 600, -1, -1));
 
+        f.setForeground(new java.awt.Color(0, 0, 0));
         f.setText("F");
         f.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -197,6 +203,7 @@ public class PantallaInicio extends javax.swing.JFrame {
         jPanel1.add(f, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 600, -1, -1));
 
         btnGuardar.setBackground(new java.awt.Color(0, 153, 153));
+        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -204,6 +211,16 @@ public class PantallaInicio extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 600, -1, -1));
+
+        bttn_puntuaciones.setBackground(new java.awt.Color(0, 153, 153));
+        bttn_puntuaciones.setForeground(new java.awt.Color(255, 255, 255));
+        bttn_puntuaciones.setText("Puntuaciones");
+        bttn_puntuaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttn_puntuacionesActionPerformed(evt);
+            }
+        });
+        jPanel1.add(bttn_puntuaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 600, 150, -1));
         jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 540, 230, 30));
         jPanel1.add(lblImageHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1210, 660));
 
@@ -256,12 +273,20 @@ public class PantallaInicio extends javax.swing.JFrame {
         actualizarImagenes(listaJugadores);      
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    private void bttn_puntuacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttn_puntuacionesActionPerformed
+        Puntuaciones mostrar_puntuaciones = new Puntuaciones(listaJugadores, listaPuntuaciones); 
+        mostrar_puntuaciones.setVisible(true);
+        mostrar_puntuaciones.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_bttn_puntuacionesActionPerformed
+
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnJugar;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JButton bttn_puntuaciones;
     private javax.swing.JRadioButton f;
     private javax.swing.ButtonGroup grupoGenero;
     private javax.swing.JLabel jLabel1;

@@ -27,7 +27,8 @@ public final class Juego extends javax.swing.JFrame {
     private ListaJugador listaJugadores;
     private ListaPuntuaciones listaPuntuaciones;
     
-    public Juego(ListaJugador listaJugadores, ListaPuntuaciones listaPuntuaciones)
+    public Juego(ListaJugador listaJugadores, ListaPuntuaciones 
+            listaPuntuaciones)
     {
         
         initComponents();
@@ -37,7 +38,8 @@ public final class Juego extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setResizable(false); 
  
-        nombre_jugador.setText(listaJugadores.obtenerUltimoJugadorSesion().getNombre());
+        nombre_jugador.setText(listaJugadores.obtenerUltimoJugadorSesion()
+                .getNombre());
         
         //carga imagenes del header
         activarImagenes();
@@ -410,8 +412,23 @@ public final class Juego extends javax.swing.JFrame {
         lblPuntuacion.setText(StringPuntuacion);
     } 
     
-    public void terminarJuego(){
+    public void asignarPuntuaciones()
+    {
+        String asignarNombre = listaJugadores.obtenerUltimoJugadorSesion()
+                .getNombre();
+        int asignarPuntuacion = puntuacion;
         
+        Puntuacion nuevaPuntuacion = new Puntuacion(asignarNombre,
+                asignarPuntuacion);
+
+        listaPuntuaciones.agregarPuntuacion(nuevaPuntuacion);
+    }
+    
+    public void terminarJuego()
+    {
+        asignarPuntuaciones();
+        JOptionPane.showMessageDialog(null, "Su puntuación fue de: "
+                + puntuacion);
         tiempoOrdenes.stop(); 
         tiempoJuego.stop(); 
         
@@ -465,6 +482,7 @@ public final class Juego extends javax.swing.JFrame {
         txtPuntuacion = new javax.swing.JLabel();
         txtTiempo = new javax.swing.JLabel();
         lblTomate = new javax.swing.JLabel();
+        Enviar_Puntuacion = new javax.swing.JButton();
         lblCebolla = new javax.swing.JLabel();
         lblCreandoOrden = new javax.swing.JLabel();
         lblHeader = new javax.swing.JLabel();
@@ -480,6 +498,7 @@ public final class Juego extends javax.swing.JFrame {
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 190, 50));
 
         salirMenuPrincipal_Juego.setBackground(new java.awt.Color(204, 51, 0));
+        salirMenuPrincipal_Juego.setForeground(new java.awt.Color(255, 255, 255));
         salirMenuPrincipal_Juego.setText("Salir del Juego");
         salirMenuPrincipal_Juego.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -501,6 +520,7 @@ public final class Juego extends javax.swing.JFrame {
         jPanel1.add(nombre_jugador, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 10, 180, -1));
 
         btnTerminarOrden.setBackground(new java.awt.Color(204, 153, 0));
+        btnTerminarOrden.setForeground(new java.awt.Color(255, 255, 255));
         btnTerminarOrden.setText("Terminar Orden");
         btnTerminarOrden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -530,6 +550,7 @@ public final class Juego extends javax.swing.JFrame {
         jPanel1.add(lblLechuga, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 490, 70, 60));
 
         jButton1.setBackground(new java.awt.Color(0, 153, 153));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("◀");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -539,15 +560,17 @@ public final class Juego extends javax.swing.JFrame {
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 510, -1, -1));
 
         Elegir1.setBackground(new java.awt.Color(0, 153, 153));
+        Elegir1.setForeground(new java.awt.Color(255, 255, 255));
         Elegir1.setText("Elegir");
         Elegir1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Elegir1ActionPerformed(evt);
             }
         });
-        jPanel1.add(Elegir1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 590, 100, -1));
+        jPanel1.add(Elegir1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 600, 100, -1));
 
         Elegir2.setBackground(new java.awt.Color(0, 153, 153));
+        Elegir2.setForeground(new java.awt.Color(255, 255, 255));
         Elegir2.setText("Elegir");
         Elegir2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -557,6 +580,7 @@ public final class Juego extends javax.swing.JFrame {
         jPanel1.add(Elegir2, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 590, 100, -1));
 
         Elegir3.setBackground(new java.awt.Color(0, 153, 153));
+        Elegir3.setForeground(new java.awt.Color(255, 255, 255));
         Elegir3.setText("Elegir");
         Elegir3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -566,6 +590,7 @@ public final class Juego extends javax.swing.JFrame {
         jPanel1.add(Elegir3, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 590, 100, -1));
 
         Elegir4.setBackground(new java.awt.Color(0, 153, 153));
+        Elegir4.setForeground(new java.awt.Color(255, 255, 255));
         Elegir4.setText("Elegir");
         Elegir4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -575,6 +600,7 @@ public final class Juego extends javax.swing.JFrame {
         jPanel1.add(Elegir4, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 590, 100, -1));
 
         Elegir5.setBackground(new java.awt.Color(0, 153, 153));
+        Elegir5.setForeground(new java.awt.Color(255, 255, 255));
         Elegir5.setText("Elegir");
         Elegir5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -607,12 +633,20 @@ public final class Juego extends javax.swing.JFrame {
         txtTiempo.setText("Tiempo Restante:");
         jPanel1.add(txtTiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 20, -1, -1));
         jPanel1.add(lblTomate, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 750, 70, 60));
+
+        Enviar_Puntuacion.setText("Enviar");
+        Enviar_Puntuacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Enviar_PuntuacionActionPerformed(evt);
+            }
+        });
+        jPanel1.add(Enviar_Puntuacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 650, -1, -1));
         jPanel1.add(lblCebolla, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 660, 70, 60));
 
         lblCreandoOrden.setBackground(new java.awt.Color(255, 255, 255));
         lblCreandoOrden.setForeground(new java.awt.Color(255, 255, 255));
         jPanel1.add(lblCreandoOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 180, 620));
-        jPanel1.add(lblHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 850));
+        jPanel1.add(lblHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1410, 850));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -661,11 +695,19 @@ public final class Juego extends javax.swing.JFrame {
     }//GEN-LAST:event_nombre_jugadorActionPerformed
 
     private void salirMenuPrincipal_JuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirMenuPrincipal_JuegoActionPerformed
-        PantallaInicio volvermenu = new PantallaInicio(listaJugadores, listaPuntuaciones);
+        asignarPuntuaciones();
+        JOptionPane.showMessageDialog(null, "Su puntuación fue de: "
+                + puntuacion);
+        PantallaInicio volvermenu = new PantallaInicio(listaJugadores,
+                listaPuntuaciones);
         volvermenu.setVisible(true);
         volvermenu.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_salirMenuPrincipal_JuegoActionPerformed
+
+    private void Enviar_PuntuacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Enviar_PuntuacionActionPerformed
+        asignarPuntuaciones();
+    }//GEN-LAST:event_Enviar_PuntuacionActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -674,6 +716,7 @@ public final class Juego extends javax.swing.JFrame {
     private javax.swing.JButton Elegir3;
     private javax.swing.JButton Elegir4;
     private javax.swing.JButton Elegir5;
+    private javax.swing.JButton Enviar_Puntuacion;
     private javax.swing.JButton btnTerminarOrden;
     private javax.swing.JLabel campo_nombre;
     private javax.swing.JButton jButton1;
