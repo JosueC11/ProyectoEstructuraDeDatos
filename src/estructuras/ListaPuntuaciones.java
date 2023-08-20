@@ -1,3 +1,4 @@
+
 package estructuras;
 
 import javax.swing.JOptionPane;
@@ -57,5 +58,36 @@ public class ListaPuntuaciones
         }
 
         JOptionPane.showMessageDialog(null, mensaje.toString());
+    }
+    
+    public Object[][] obtenerPuntuacionesComoMatriz() 
+    {
+        NodoLista actual = primerNodo;
+        int tamaño = obtenerTamaño();
+        Object[][] puntuacionesMatriz = new Object[tamaño][2];
+
+        int fila = 0;
+        while (actual != null) 
+        {
+            Puntuacion puntuacion = actual.getPuntuacion();
+            puntuacionesMatriz[fila][0] = puntuacion.getNombre();
+            puntuacionesMatriz[fila][1] = puntuacion.getPuntuacion();
+            actual = actual.getSiguiente();
+            fila++;
+        }
+
+        return puntuacionesMatriz;
+    }
+    
+    private int obtenerTamaño() 
+    {
+        int tamaño = 0;
+        NodoLista actual = primerNodo;
+        while (actual != null) 
+        {
+            tamaño++;
+            actual = actual.getSiguiente();
+        }
+        return tamaño;
     }
 }

@@ -25,12 +25,21 @@ public class Puntuaciones extends javax.swing.JFrame {
         modeloListado.addColumn("Puntuación");
         this.jTable1.setModel(modeloListado);
        
+        mostrarPuntuacionesEnTabla();
     }
 
     
-    public void mostrarPuntuaciones()
+    public void mostrarPuntuacionesEnTabla() 
     {
-        listaPuntuaciones.mostrarPuntuaciones();
+        modeloListado.setRowCount(0);
+        
+        Object[][] puntuacionesMatriz = listaPuntuaciones.
+                obtenerPuntuacionesComoMatriz();
+        
+        for (Object[] puntuacion : puntuacionesMatriz) 
+        {
+            modeloListado.addRow(puntuacion);
+        }
     }
     
     public final void activarImagenes()
@@ -102,7 +111,6 @@ public class Puntuaciones extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bttn_volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttn_volverActionPerformed
-        mostrarPuntuaciones();
         PantallaInicio volvermenu = new PantallaInicio(listaJugadores, listaPuntuaciones);
         volvermenu.setVisible(true);
         volvermenu.setLocationRelativeTo(null);
