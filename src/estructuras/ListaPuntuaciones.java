@@ -44,7 +44,7 @@ public class ListaPuntuaciones
         NodoLista actual = primerNodo;
 
         if (actual == null) {
-            JOptionPane.showMessageDialog(null, "No hay puntuaciones registradas.");
+//            JOptionPane.showMessageDialog(null, "No hay puntuaciones registradas.");
             return;
         }
 

@@ -1,6 +1,8 @@
 package vistas;
 import estructuras.*;
+import javax.swing.Icon;
 import javax.swing.JOptionPane;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
 public class Puntuaciones extends javax.swing.JFrame {
@@ -22,14 +24,25 @@ public class Puntuaciones extends javax.swing.JFrame {
         modeloListado.addColumn("Nombre");
         modeloListado.addColumn("Puntuación");
         this.jTable1.setModel(modeloListado);
-        
-        mostrarPuntuaciones();
+       
     }
 
     
     public void mostrarPuntuaciones()
     {
         listaPuntuaciones.mostrarPuntuaciones();
+    }
+    
+    public final void activarImagenes()
+    {
+
+        Icon header = new ImageIcon(new ImageIcon(getClass()
+        .getResource("/imagenesJuego/39030_Overcooked.jpg")).getImage()
+        .getScaledInstance(lblHeaderPuntuacion.getWidth(), 
+        lblHeaderPuntuacion.getHeight(), 0));
+       
+        // Se le setea el Icon a el labels
+        lblHeaderPuntuacion.setIcon(header);      
     }
     
     @SuppressWarnings("unchecked")
@@ -39,8 +52,8 @@ public class Puntuaciones extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        lblHeaderPuntuacion = new javax.swing.JLabel();
         bttn_volver = new javax.swing.JButton();
+        lblHeaderPuntuacion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,8 +72,7 @@ public class Puntuaciones extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, -1, 550));
-        jPanel1.add(lblHeaderPuntuacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 680, 740));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 170, -1, 550));
 
         bttn_volver.setBackground(new java.awt.Color(0, 153, 153));
         bttn_volver.setForeground(new java.awt.Color(255, 255, 255));
@@ -70,13 +82,16 @@ public class Puntuaciones extends javax.swing.JFrame {
                 bttn_volverActionPerformed(evt);
             }
         });
-        jPanel1.add(bttn_volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 650, -1, -1));
+        jPanel1.add(bttn_volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 770, -1, -1));
+
+        lblHeaderPuntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenesJuego/39030_Overcooked.jpg"))); // NOI18N
+        jPanel1.add(lblHeaderPuntuacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 720, 840));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -87,6 +102,7 @@ public class Puntuaciones extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bttn_volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttn_volverActionPerformed
+        mostrarPuntuaciones();
         PantallaInicio volvermenu = new PantallaInicio(listaJugadores, listaPuntuaciones);
         volvermenu.setVisible(true);
         volvermenu.setLocationRelativeTo(null);
