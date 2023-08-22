@@ -11,14 +11,15 @@ import javax.swing.table.DefaultTableModel;
 
 public final class Juego extends javax.swing.JFrame {
     
-    ListaOrdenes lista = new ListaOrdenes(); 
-    
+    //Inicializa las clases a utilizar 
+    ListaOrdenes lista = new ListaOrdenes();    
     ListaCircular  listaCircular = new ListaCircular();
     
     private Timer tiempoOrdenes;
     private Timer tiempoJuego;
     
-    private int centesimaOrdenes = 99, segundoOrdenes = 1;
+    //Atributos para controlar los tiempos
+    private int centesimaOrdenes = 99, segundoOrdenes = 19;
     private int centesimaJuego = 99, segundoJuego = 59, minutoJuego = 4;
     
     private int inicioOrdenes = 0;
@@ -67,11 +68,12 @@ public final class Juego extends javax.swing.JFrame {
 
     }
     
-    //Tarea de generar ordenes
+    //Tarea para generar ordenes cada 20 segundos
     private ActionListener generarOrdenes = new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent e) {
             
+            //Actualiza los atributos
             centesimaOrdenes --;
             lista.agregarOrdenCola();
             if(centesimaOrdenes == 0){
@@ -79,8 +81,9 @@ public final class Juego extends javax.swing.JFrame {
                 segundoOrdenes --;
                 centesimaOrdenes = 99;
             }
-            if(segundoOrdenes == -1){
-                
+            //Si pasaron los 20 segundos agrega orden a la cola y la genera en
+            //el jframe
+            if(segundoOrdenes == -1){               
                 lista.agregarOrdenCola();
                 generarOrden();
                 centesimaOrdenes = 99;
@@ -89,13 +92,13 @@ public final class Juego extends javax.swing.JFrame {
         }   
     };
     
-    //Tarea de temporizador
+    //Tarea para el temporizador
     private ActionListener temporizadorJuego = new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent e) {
             
+            //Actualiza los atributos
             centesimaJuego --;
-            
             if(centesimaJuego == -1){
                 
                 segundoJuego --;
@@ -107,6 +110,7 @@ public final class Juego extends javax.swing.JFrame {
                 centesimaJuego = 99;
                 segundoJuego = 59;     
             }
+            //Si pasaron los 5 minutos termina el juego
             if(minutoJuego == -1){
                 
                 terminarJuego();             
@@ -127,7 +131,7 @@ public final class Juego extends javax.swing.JFrame {
         labelTemporizador.setText(tiempo);   
     }
     
-    //setea los campos de las ordenes
+    //setea los campos de las ordenes. Crea un Icon para la imagen y la setea
     public final void activarImagenes(){
 
         Icon header = new ImageIcon(new ImageIcon(getClass()
@@ -138,13 +142,16 @@ public final class Juego extends javax.swing.JFrame {
         lblHeader.setIcon(header);           
     }
     
-    //Genera una orden al inicio del juego
+    //Genera una orden al inicio del juego, solo al inicio 
     public void generarOrdenInicio(){
         
+        //if para saber si la orden inicial se generó una vez ya
         if(inicioOrdenes == 0){
             
+            //Llama al metodo devolverDeCola para agregar la orden al label
             Orden orden = lista.devolverDeCola();
             
+            //Crea un Icon para la imagen y la setea
             Icon ordenIcon = new ImageIcon(new ImageIcon(getClass()
             .getResource("/imagenesOrdenes/"+orden.getNombre()+".png")).getImage()
             .getScaledInstance(labelOrden1.getWidth(), 
@@ -160,14 +167,17 @@ public final class Juego extends javax.swing.JFrame {
     
     //metodo para generar las ordenes cada 20 segundos
     public void generarOrden(){
-
+        
+        //Llama al metodo devolverDeCola para agregar la orden al label
         Orden orden = lista.devolverDeCola();
-
+        
+        //Crea un Icon para la imagen y la setea
         Icon ordenIcon = new ImageIcon(new ImageIcon(getClass()
         .getResource("/imagenesOrdenes/"+orden.getNombre()+".png")).getImage()
         .getScaledInstance(labelOrden1.getWidth(), 
         labelOrden1.getHeight(),0));
 
+        //iff para saber en cual label setear la información
         if(labelOrden1.getText().isBlank() && 
            labelOrden2.getText().isBlank() && 
            labelOrden3.getText().isBlank()){
@@ -192,6 +202,8 @@ public final class Juego extends javax.swing.JFrame {
         }
     }
     
+    //metodo para generar los ingredientes en la lista circular al inico 
+    //del juego
     public void llenarListaCircular(){
         
         listaCircular.insertar(new Ingrediente("lechuga"));
@@ -203,19 +215,22 @@ public final class Juego extends javax.swing.JFrame {
         listaCircular.insertar(new Ingrediente("aguacate"));      
     }
     
+    //metodo para imprimir los ingredientes en los label
     public void imprimirIngredientes(){
         
         int indice = 6;
-
+        //cilco para agregar los ingredientes a los label
         while(indice > 0){
             
+            //Llama al metodo imprimir para devolver un ingrediente
             String nombre = listaCircular.imprimir();
             
             Icon ingrediente = new ImageIcon(new ImageIcon(getClass()
             .getResource("/imagenesIngredientes/"+nombre+".png")).getImage()
             .getScaledInstance(lblIngre1.getWidth(), 
             lblIngre1.getHeight(),0));
-                  
+            
+            //if para saber a cual label setear
             if(indice == 1){
                 lblIngre1.setIcon(ingrediente);
                 lblIngre1.setText(nombre);       
@@ -240,8 +255,11 @@ public final class Juego extends javax.swing.JFrame {
         }
     }
     
+    //metodo que me dice cual numero de label se eligió, recibe un numero 
+    //de label
     public void elegirIngrediente(int numeroLabel){
 
+        //Switch para saber cual ingrediente mandar a la orden creada
         switch(numeroLabel){           
             case 1 -> {
                 construirOrden(lblIngre1.getText());                  
@@ -259,16 +277,20 @@ public final class Juego extends javax.swing.JFrame {
                 construirOrden(lblIngre5.getText());
             }
         } 
+        //llama al metodo que imprime los ingredientes de nuevo
         imprimirIngredientes();
     }
     
+    //metodo para contruir las ordenes, recibe un nombre de ingrediente
     public void construirOrden(String ingrediente){
         
+        //Crea un Icon para la imagen y la setea
         Icon iconIngrediente = new ImageIcon(new ImageIcon(getClass()
         .getResource("/imagenesIngredientes/"+ingrediente+".png")).getImage()
         .getScaledInstance(lblPan.getWidth(), 
         lblPan.getHeight(),0));
         
+        //Switch para setaer ingrediente en la orden creada
         switch(ingrediente){
             case "pan" -> {
                 lblPan.setText(ingrediente);
@@ -301,10 +323,13 @@ public final class Juego extends javax.swing.JFrame {
         }      
     }
     
+    //metodo para para terminar la orden creada
     public void terminarOrden(){
       
+        //llamr al metodo para revisar si la orden está bien
         revisarOrden();
         
+        //setea datos a la orden terminada y mover de espacios las otras
         labelOrden1.setText("");
         labelOrden1.setIcon(null);
         
@@ -331,11 +356,14 @@ public final class Juego extends javax.swing.JFrame {
             lblHamburguesaCreando.setText(labelOrden1.getText());
         }   
 
+        //llamar al metodo para limpiar la orden creada
         limpiarOrdenCreada();       
     }
     
+    //metodo para limpiar la orden creada
     public void limpiarOrdenCreada(){
         
+        //setea datos default a los label
         lblPan.setIcon(null);
         lblPan.setText("");
         lblCarne.setIcon(null);
@@ -352,12 +380,53 @@ public final class Juego extends javax.swing.JFrame {
         lblCebolla.setText("");    
     }
     
+    //metodo para limpiar los ingtedientes uno a uno
+    //recibe un numero de ingrediente
+    public void limpiarIngrediente(int numeroIngrediente){
+        
+        //Switch para saber cual ingrediente limpiar
+        switch(numeroIngrediente){           
+            case 1 -> {              
+                lblPan.setIcon(null);
+                lblPan.setText("");                                
+            }
+            case 2 -> {
+                lblCarne.setIcon(null);
+                lblCarne.setText("");               
+            } 
+            case 3 -> {
+                lblQueso.setIcon(null);
+                lblQueso.setText("");
+            } 
+            case 4 -> {
+                lblLechuga.setIcon(null);
+                lblLechuga.setText("");
+            }           
+            case 5 -> {
+                lblAguacate.setIcon(null);
+                lblAguacate.setText("");
+            }
+            case 6 -> {
+                lblCebolla.setIcon(null);
+                lblCebolla.setText("");
+            }
+            case 7 -> {    
+                lblTomate.setIcon(null);
+                lblTomate.setText("");
+            }
+        }     
+    }
+    
+    //metodo para revisar la orden creada
     public void revisarOrden(){
         
+        //Trae el nombre de la orden que se está creado
         String nombreOrden = labelOrden1.getText();
         
+        //llama al metodo que devuelve una orden segun el nomnbre que se le pasa
         Orden ordenRevisar = lista.devolverOrden(nombreOrden);
         
+        //setear atributos para comparar
         Boolean pan = ordenRevisar.getPan();
         Boolean carne = ordenRevisar.getCarne();
         Boolean queso = ordenRevisar.getQueso();
@@ -366,9 +435,11 @@ public final class Juego extends javax.swing.JFrame {
         Boolean tomate= false;
         Boolean cebolla = false;
         
+        //Switch que revisa cada caso de orden y asigna una puntuacion 
+        //si está correcto
         switch(ordenRevisar.getNombre()){
-            case "hamburguesaDeCarne" -> {
-                
+            case "hamburguesaDeCarne" -> { 
+                //Revisa si los label están vacios
                 if(pan == !lblPan.getText().isEmpty() &&
                    carne == !lblCarne.getText().isEmpty() &&
                    queso != lblQueso.getText().isEmpty() &&
@@ -380,8 +451,8 @@ public final class Juego extends javax.swing.JFrame {
                    puntuacion += 5;    
                 }
             }   
-            case "hamburguesaConQueso" -> {
-                
+            case "hamburguesaConQueso" -> {               
+                //Revisa si los label están vacios
                 if(pan == !lblPan.getText().isEmpty() &&
                    carne == !lblCarne.getText().isEmpty() &&
                    queso == !lblQueso.getText().isEmpty() &&
@@ -393,8 +464,8 @@ public final class Juego extends javax.swing.JFrame {
                    puntuacion += 10;    
                 }
             }   
-            case "hamburguesaClasica" -> {
-                
+            case "hamburguesaClasica" -> {              
+                //Revisa si los label están vacios
                 if(pan == !lblPan.getText().isEmpty() &&
                    carne == !lblCarne.getText().isEmpty() &&
                    queso == !lblQueso.getText().isEmpty() &&
@@ -407,7 +478,7 @@ public final class Juego extends javax.swing.JFrame {
                 }    
             }
         }
-        
+        //setea la puntuacion en ul label
         String StringPuntuacion = String.valueOf(puntuacion);
         lblPuntuacion.setText(StringPuntuacion);
     } 
@@ -424,17 +495,22 @@ public final class Juego extends javax.swing.JFrame {
         listaPuntuaciones.agregarPuntuacion(nuevaPuntuacion);
     }
     
-    public void terminarJuego()
-    {
+    //metodo para terminar el juego
+    public void terminarJuego(){
+        
+        //llama al metodo de asignarPuntuacion
         asignarPuntuaciones();
         JOptionPane.showMessageDialog(null, "Su puntuación fue de: "
                 + puntuacion);
+        
+        //Detiene la tarea de los tiempos de orden y temporizador
         tiempoOrdenes.stop(); 
         tiempoJuego.stop(); 
         
         JOptionPane.showMessageDialog
         (null,"El juego terminó");
         
+        // Lo lleva a la pantalla de inicio
         PantallaInicio pantallaInicio = new PantallaInicio(listaJugadores, 
                                                         listaPuntuaciones);
         pantallaInicio.setVisible(true);
@@ -482,9 +558,14 @@ public final class Juego extends javax.swing.JFrame {
         txtPuntuacion = new javax.swing.JLabel();
         txtTiempo = new javax.swing.JLabel();
         lblTomate = new javax.swing.JLabel();
-        Enviar_Puntuacion = new javax.swing.JButton();
         lblCebolla = new javax.swing.JLabel();
-        lblCreandoOrden = new javax.swing.JLabel();
+        btnOrd6 = new javax.swing.JButton();
+        btnOrd1 = new javax.swing.JButton();
+        btnOrd7 = new javax.swing.JButton();
+        btnOrd5 = new javax.swing.JButton();
+        btnOrd4 = new javax.swing.JButton();
+        btnOrd3 = new javax.swing.JButton();
+        btnOrd2 = new javax.swing.JButton();
         lblHeader = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -633,19 +714,70 @@ public final class Juego extends javax.swing.JFrame {
         txtTiempo.setText("Tiempo Restante:");
         jPanel1.add(txtTiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 20, -1, -1));
         jPanel1.add(lblTomate, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 750, 70, 60));
-
-        Enviar_Puntuacion.setText("Enviar");
-        Enviar_Puntuacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Enviar_PuntuacionActionPerformed(evt);
-            }
-        });
-        jPanel1.add(Enviar_Puntuacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 650, -1, -1));
         jPanel1.add(lblCebolla, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 660, 70, 60));
 
-        lblCreandoOrden.setBackground(new java.awt.Color(255, 255, 255));
-        lblCreandoOrden.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(lblCreandoOrden, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 180, 620));
+        btnOrd6.setBackground(new java.awt.Color(204, 51, 0));
+        btnOrd6.setText("Eliminar");
+        btnOrd6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrd6ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnOrd6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 680, 40, -1));
+
+        btnOrd1.setBackground(new java.awt.Color(204, 51, 0));
+        btnOrd1.setText("Eliminar");
+        btnOrd1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrd1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnOrd1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 260, 40, -1));
+
+        btnOrd7.setBackground(new java.awt.Color(204, 51, 0));
+        btnOrd7.setText("Eliminar");
+        btnOrd7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrd7ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnOrd7, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 770, 40, -1));
+
+        btnOrd5.setBackground(new java.awt.Color(204, 51, 0));
+        btnOrd5.setText("Eliminar");
+        btnOrd5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrd5ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnOrd5, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 590, 40, -1));
+
+        btnOrd4.setBackground(new java.awt.Color(204, 51, 0));
+        btnOrd4.setText("Eliminar");
+        btnOrd4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrd4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnOrd4, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 510, 40, -1));
+
+        btnOrd3.setBackground(new java.awt.Color(204, 51, 0));
+        btnOrd3.setText("Eliminar");
+        btnOrd3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrd3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnOrd3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 420, 40, -1));
+
+        btnOrd2.setBackground(new java.awt.Color(204, 51, 0));
+        btnOrd2.setText("Eliminar");
+        btnOrd2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrd2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnOrd2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 340, 40, -1));
         jPanel1.add(lblHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1410, 850));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -661,6 +793,34 @@ public final class Juego extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnOrd2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrd2ActionPerformed
+        limpiarIngrediente(2);
+    }//GEN-LAST:event_btnOrd2ActionPerformed
+
+    private void btnOrd3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrd3ActionPerformed
+        limpiarIngrediente(3);
+    }//GEN-LAST:event_btnOrd3ActionPerformed
+
+    private void btnOrd4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrd4ActionPerformed
+        limpiarIngrediente(4);
+    }//GEN-LAST:event_btnOrd4ActionPerformed
+
+    private void btnOrd5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrd5ActionPerformed
+        limpiarIngrediente(5);
+    }//GEN-LAST:event_btnOrd5ActionPerformed
+
+    private void btnOrd7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrd7ActionPerformed
+        limpiarIngrediente(7);
+    }//GEN-LAST:event_btnOrd7ActionPerformed
+
+    private void btnOrd1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrd1ActionPerformed
+        limpiarIngrediente(1);
+    }//GEN-LAST:event_btnOrd1ActionPerformed
+
+    private void btnOrd6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrd6ActionPerformed
+        limpiarIngrediente(6);
+    }//GEN-LAST:event_btnOrd6ActionPerformed
 
     private void Elegir5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Elegir5ActionPerformed
         elegirIngrediente(5);
@@ -697,18 +857,13 @@ public final class Juego extends javax.swing.JFrame {
     private void salirMenuPrincipal_JuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirMenuPrincipal_JuegoActionPerformed
         asignarPuntuaciones();
         JOptionPane.showMessageDialog(null, "Su puntuación fue de: "
-                + puntuacion);
+            + puntuacion);
         PantallaInicio volvermenu = new PantallaInicio(listaJugadores,
-                listaPuntuaciones);
+            listaPuntuaciones);
         volvermenu.setVisible(true);
         volvermenu.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_salirMenuPrincipal_JuegoActionPerformed
-
-    private void Enviar_PuntuacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Enviar_PuntuacionActionPerformed
-        asignarPuntuaciones();
-    }//GEN-LAST:event_Enviar_PuntuacionActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Elegir1;
@@ -716,7 +871,13 @@ public final class Juego extends javax.swing.JFrame {
     private javax.swing.JButton Elegir3;
     private javax.swing.JButton Elegir4;
     private javax.swing.JButton Elegir5;
-    private javax.swing.JButton Enviar_Puntuacion;
+    private javax.swing.JButton btnOrd1;
+    private javax.swing.JButton btnOrd2;
+    private javax.swing.JButton btnOrd3;
+    private javax.swing.JButton btnOrd4;
+    private javax.swing.JButton btnOrd5;
+    private javax.swing.JButton btnOrd6;
+    private javax.swing.JButton btnOrd7;
     private javax.swing.JButton btnTerminarOrden;
     private javax.swing.JLabel campo_nombre;
     private javax.swing.JButton jButton1;
@@ -729,7 +890,6 @@ public final class Juego extends javax.swing.JFrame {
     private javax.swing.JLabel lblAguacate;
     private javax.swing.JLabel lblCarne;
     private javax.swing.JLabel lblCebolla;
-    private javax.swing.JLabel lblCreandoOrden;
     private javax.swing.JLabel lblHamburguesaCreando;
     private javax.swing.JLabel lblHeader;
     private javax.swing.JLabel lblIngre1;

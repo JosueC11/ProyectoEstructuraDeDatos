@@ -17,6 +17,8 @@ public class PantallaInicio extends javax.swing.JFrame {
         this.listaJugadores = listaJugadores;
         this.listaPuntuaciones = listaPuntuaciones;
         initComponents();
+        
+        //Llama al metodo para activar canciones e imagenes
         activarCancionInicio();
         activarImagenes();
         
@@ -63,7 +65,6 @@ public class PantallaInicio extends javax.swing.JFrame {
     public final void activarImagenes(){
 
         // Utilizamos el parámetro listaJugadores para obtener el último jugador
-        
         Icon header = new ImageIcon(new ImageIcon(getClass()
         .getResource("/imagenesJuego/overcookedHeaderHome.png")).getImage()
         .getScaledInstance(lblImageHeader.getWidth(), 
@@ -82,8 +83,8 @@ public class PantallaInicio extends javax.swing.JFrame {
         if(genero != null && genero.equalsIgnoreCase("M")){
             
            Icon manPlayer = new ImageIcon(new ImageIcon
-            (getClass().getResource("/imagenesJuego/manPlayer.png")).getImage()
-            .getScaledInstance(lblImageUser.getWidth(), 
+            (getClass().getResource("/imagenesJuego/manPlayer.png"))
+            .getImage().getScaledInstance(lblImageUser.getWidth(), 
             lblImageUser.getHeight(), 0)); 
            
            lblImageUser.setIcon(manPlayer);  
@@ -91,8 +92,8 @@ public class PantallaInicio extends javax.swing.JFrame {
         }else if(genero != null && genero.equalsIgnoreCase("F")){
             
             Icon womanPlayer = new ImageIcon(new ImageIcon
-            (getClass().getResource("/imagenesJuego/womanPlayer.png")).getImage()
-            .getScaledInstance(lblImageUser.getWidth(), 
+            (getClass().getResource("/imagenesJuego/womanPlayer.png"))
+            .getImage().getScaledInstance(lblImageUser.getWidth(), 
             lblImageUser.getHeight(), 0));
             
             lblImageUser.setIcon(womanPlayer);  

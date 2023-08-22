@@ -1,6 +1,4 @@
-
 package estructuras;
-
 
 public class Jugador 
 {   

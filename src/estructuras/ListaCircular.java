@@ -12,9 +12,12 @@ public class ListaCircular{
     
     private NodoLC cabeza;
     private NodoLC ultimo;
+    //Atributo para controlar el siguinete ingrediente a mostrar
     private NodoLC siguiente;
     private int indice = 0;
 
+    //Metodo que inserta un ingrediente en la lista Circular 
+    //recibe un ingrediente
     public void insertar(Ingrediente ingrediente){
         
         if(cabeza == null){
@@ -27,22 +30,25 @@ public class ListaCircular{
         ultimo.setNext(cabeza);
     }
     
+    //Metodo que devuelve un ingrediente para imprimir en el jframe
     public String imprimir(){
         
         NodoLC aux = cabeza;
         String ingrediente = "";
         
         if(aux != null){
-            
+            //if para imprimir la cabeza
             if(indice == 0){
                 ingrediente += aux.getDato().getNombre();
                 indice++;
+                //setear el siguiente que se imprime
                 siguiente = aux.getNext();
             }else{
                 while(aux != siguiente){        
                     aux = aux.getNext();             
                 }
                 ingrediente += aux.getDato().getNombre();
+                //setear el siguiente que se imprime
                 siguiente = aux.getNext();
             }
         } 

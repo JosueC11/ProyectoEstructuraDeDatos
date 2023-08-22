@@ -16,6 +16,7 @@ public class ListaOrdenes {
     
     private ColaOrdenes cola = new ColaOrdenes();
     
+    //Metodo para insertar una orden a la lista de ordenes 
     public void inserta(Orden orden){
         
         if(cabeza == null){
@@ -48,13 +49,16 @@ public class ListaOrdenes {
         } 
     }
     
+    //metodo para elegir una orden de la lista y agregarla en la cola
     public void agregarOrdenCola(){
 
+        //Generar un numero random para elegir la orden 
         Random random = new Random();
         int ordenAleatoria = random.nextInt(3);
 
         if (cabeza != null){ 
             
+            //revisa la lista y busca la orden y la encola 
             if (cabeza.getOrden().getId () == ordenAleatoria){
                 
                 cola.encola(cabeza.getOrden());
@@ -79,6 +83,8 @@ public class ListaOrdenes {
         }
     }
     
+    //metodo para devolver una orden de la lista a la hora de revisar 
+    //la orden creada
     public Orden devolverOrden(String nombreOrden){
         
         NodoLista aux = cabeza;
@@ -92,6 +98,7 @@ public class ListaOrdenes {
         return aux.getOrden();
     }
     
+    //Metodo para llenar la lista de ordenes
     public void llenarLista(){
         
         inserta(new Orden("hamburguesaDeCarne",true,true,
@@ -102,6 +109,7 @@ public class ListaOrdenes {
                 true,true,4,2));
     }
     
+    //metodo para devolver una orden que está en el frente de la cola
     public Orden devolverDeCola(){
         
         return cola.atiende();
