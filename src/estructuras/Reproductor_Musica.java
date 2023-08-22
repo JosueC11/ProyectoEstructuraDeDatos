@@ -1,8 +1,6 @@
 package estructuras;
-/**
- *
- * @author Dennis
- */
+
+
 import java.io.IOException;
 import javax.sound.sampled.*;
 
@@ -10,7 +8,8 @@ public class Reproductor_Musica implements Runnable
 {
     private Clip cancion;
     private FloatControl controladorVolumen;
-    private static Reproductor_Musica instancia; // Variable para almacenar la instancia única
+    private static Reproductor_Musica instancia; // Variable para almacenar la 
+    //instancia única
     public boolean reproduciendo;
 
     private Reproductor_Musica() 
@@ -18,12 +17,15 @@ public class Reproductor_Musica implements Runnable
         try 
         {
             cancion = AudioSystem.getClip();
-            cancion.open(AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/cancion/feid.wav")));
-            controladorVolumen = (FloatControl)cancion.getControl(FloatControl.Type.MASTER_GAIN);
+            cancion.open(AudioSystem.getAudioInputStream(getClass().
+                    getResourceAsStream("/cancion/feid.wav")));
+            controladorVolumen = (FloatControl)cancion.getControl(
+                    FloatControl.Type.MASTER_GAIN);
             controladorVolumen.setValue(-30.0f);
             reproduciendo = false;
         } 
-        catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) 
+        catch (IOException | LineUnavailableException | 
+                UnsupportedAudioFileException e) 
         {
             e.printStackTrace();
         }

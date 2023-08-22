@@ -1,13 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package estructuras;
 
-/**
- *
- * @author Josuu
- */
+
 public class Orden {
     
     private String nombre;
@@ -18,7 +11,8 @@ public class Orden {
     private int cantIngredientes;
     private int id;
 
-    public Orden(String nombre, Boolean pan, Boolean carne, Boolean queso, Boolean lechuga, int cantIngredientes, int id) {
+    public Orden(String nombre, Boolean pan, Boolean carne, Boolean queso, 
+            Boolean lechuga, int cantIngredientes, int id) {
         this.nombre = nombre;
         this.pan = pan;
         this.carne = carne;

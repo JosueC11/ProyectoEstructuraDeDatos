@@ -9,49 +9,51 @@ public class Puntuaciones extends javax.swing.JFrame {
 
     private ListaJugador listaJugadores;
     private ListaPuntuaciones listaPuntuaciones;
-    
+
     DefaultTableModel modeloListado;
     String[] info = new String[8];
-    
-    public Puntuaciones(ListaJugador listaJugadores, 
-            ListaPuntuaciones listaPuntuaciones) 
-    {
+
+    public Puntuaciones(ListaJugador listaJugadores, ListaPuntuaciones 
+            listaPuntuaciones) {
         this.listaJugadores = listaJugadores;
         this.listaPuntuaciones = listaPuntuaciones;
         initComponents();
-        
+
+        // Crear un modelo de tabla para la visualización de puntuaciones
         modeloListado = new DefaultTableModel();
         modeloListado.addColumn("Nombre");
         modeloListado.addColumn("Puntuación");
         this.jTable1.setModel(modeloListado);
-       
+
+        // Mostrar las puntuaciones en la tabla
         mostrarPuntuacionesEnTabla();
     }
 
-    
-    public void mostrarPuntuacionesEnTabla() 
-    {
+    // Método para actualizar la tabla con las puntuaciones almacenadas
+    public void mostrarPuntuacionesEnTabla() {
+        // Limpiar el contenido actual de la tabla
         modeloListado.setRowCount(0);
-        
+
+        // Obtener las puntuaciones como una matriz de objetos
         Object[][] puntuacionesMatriz = listaPuntuaciones.
                 obtenerPuntuacionesComoMatriz();
-        
-        for (Object[] puntuacion : puntuacionesMatriz) 
-        {
+
+        // Agregar cada fila de puntuación a la tabla
+        for (Object[] puntuacion : puntuacionesMatriz) {
             modeloListado.addRow(puntuacion);
         }
     }
     
-    public final void activarImagenes()
-    {
+    // Método para cargar una imagen y asignarla a un JLabel
+    public final void activarImagenes() {
+        // Cargar la imagen desde un recurso y escalarla al tamaño del JLabel
+        Icon header = new ImageIcon(new ImageIcon(getClass().
+                getResource("/imagenesJuego/39030_Overcooked.jpg"))
+            .getImage().getScaledInstance(lblHeaderPuntuacion.getWidth(),
+                    lblHeaderPuntuacion.getHeight(), 0));
 
-        Icon header = new ImageIcon(new ImageIcon(getClass()
-        .getResource("/imagenesJuego/39030_Overcooked.jpg")).getImage()
-        .getScaledInstance(lblHeaderPuntuacion.getWidth(), 
-        lblHeaderPuntuacion.getHeight(), 0));
-       
-        // Se le setea el Icon a el labels
-        lblHeaderPuntuacion.setIcon(header);      
+        // Asignar el icono cargado al JLabel
+        lblHeaderPuntuacion.setIcon(header);
     }
     
     @SuppressWarnings("unchecked")
@@ -111,7 +113,8 @@ public class Puntuaciones extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bttn_volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttn_volverActionPerformed
-        PantallaInicio volvermenu = new PantallaInicio(listaJugadores, listaPuntuaciones);
+        PantallaInicio volvermenu = new PantallaInicio(listaJugadores,
+                listaPuntuaciones);
         volvermenu.setVisible(true);
         volvermenu.setLocationRelativeTo(null);
         this.dispose();

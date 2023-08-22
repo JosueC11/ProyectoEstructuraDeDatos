@@ -27,18 +27,23 @@ public final class Juego extends javax.swing.JFrame {
 
     private ListaJugador listaJugadores;
     private ListaPuntuaciones listaPuntuaciones;
-    
+
     public Juego(ListaJugador listaJugadores, ListaPuntuaciones 
-            listaPuntuaciones)
-    {
-        
+            listaPuntuaciones) {
         initComponents();
-        this.listaJugadores = listaJugadores;
+        // Asigna la lista de jugadores recibida como argumento a la variable 
+        //miembro listaJugadores
+        this.listaJugadores = listaJugadores;  
+        // Asigna la lista de puntuaciones recibida como argumento a la variable
+        //miembro listaPuntuaciones
         this.listaPuntuaciones = listaPuntuaciones;
         // Setear posición a la pantalla
         setLocationRelativeTo(null);
         setResizable(false); 
  
+        
+        //se obtiene el ultimo jugador en iniciar sesión para asignarle
+        //las puntuaciones a ese jugador
         nombre_jugador.setText(listaJugadores.obtenerUltimoJugadorSesion()
                 .getNombre());
         
@@ -153,7 +158,8 @@ public final class Juego extends javax.swing.JFrame {
             
             //Crea un Icon para la imagen y la setea
             Icon ordenIcon = new ImageIcon(new ImageIcon(getClass()
-            .getResource("/imagenesOrdenes/"+orden.getNombre()+".png")).getImage()
+            .getResource("/imagenesOrdenes/"+orden.getNombre()+".png")).
+                    getImage()
             .getScaledInstance(labelOrden1.getWidth(), 
             labelOrden1.getHeight(),0));
             
@@ -225,7 +231,8 @@ public final class Juego extends javax.swing.JFrame {
             //Llama al metodo imprimir para devolver un ingrediente
             String nombre = listaCircular.imprimir();
             
-            Icon ingrediente = new ImageIcon(new ImageIcon(getClass()
+            Icon ingrediente = new ImageIcon(new ImageIcon(getClass(
+            )
             .getResource("/imagenesIngredientes/"+nombre+".png")).getImage()
             .getScaledInstance(lblIngre1.getWidth(), 
             lblIngre1.getHeight(),0));
@@ -285,7 +292,8 @@ public final class Juego extends javax.swing.JFrame {
     public void construirOrden(String ingrediente){
         
         //Crea un Icon para la imagen y la setea
-        Icon iconIngrediente = new ImageIcon(new ImageIcon(getClass()
+        Icon iconIngrediente = new ImageIcon(new ImageIcon(getClass(
+        )
         .getResource("/imagenesIngredientes/"+ingrediente+".png")).getImage()
         .getScaledInstance(lblPan.getWidth(), 
         lblPan.getHeight(),0));
@@ -483,15 +491,22 @@ public final class Juego extends javax.swing.JFrame {
         lblPuntuacion.setText(StringPuntuacion);
     } 
     
+    //Metodo para asignar la puntuacion obtenida en el juego
     public void asignarPuntuaciones()
     {
+        //Se le asigna el nombre a un String para almacenar este nombre
+        //y enviarlo a la listaPuntuaciones
         String asignarNombre = listaJugadores.obtenerUltimoJugadorSesion()
-                .getNombre();
+                .getNombre(); 
+        //Lo mismo con la puntuacion pero en int
         int asignarPuntuacion = puntuacion;
         
+        
+        //se agrega a la lista simple enlazada
         Puntuacion nuevaPuntuacion = new Puntuacion(asignarNombre,
                 asignarPuntuacion);
 
+        //se guarda la información
         listaPuntuaciones.agregarPuntuacion(nuevaPuntuacion);
     }
     
@@ -855,7 +870,9 @@ public final class Juego extends javax.swing.JFrame {
     }//GEN-LAST:event_nombre_jugadorActionPerformed
 
     private void salirMenuPrincipal_JuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirMenuPrincipal_JuegoActionPerformed
+        //si el jugador sale del juego se guardan las puntuaciones
         asignarPuntuaciones();
+        //se muestra la puntacion obtenida
         JOptionPane.showMessageDialog(null, "Su puntuación fue de: "
             + puntuacion);
         PantallaInicio volvermenu = new PantallaInicio(listaJugadores,

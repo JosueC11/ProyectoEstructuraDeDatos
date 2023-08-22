@@ -92,7 +92,8 @@ public class PantallaInicio extends javax.swing.JFrame {
         }else if(genero != null && genero.equalsIgnoreCase("F")){
             
             Icon womanPlayer = new ImageIcon(new ImageIcon
-            (getClass().getResource("/imagenesJuego/womanPlayer.png"))
+            (getClass().getResource("/imagenesJuego/womanPlayer.png")
+            )
             .getImage().getScaledInstance(lblImageUser.getWidth(), 
             lblImageUser.getHeight(), 0));
             
@@ -103,10 +104,12 @@ public class PantallaInicio extends javax.swing.JFrame {
     
     public void iniciarSesion(){
         
+        //Se valida que los espacios no estén vacios para evitar errores
         if(!txtNombre.getText().isEmpty()){
-            
+            //se valida que el campo de genero esté lleno
             if(m.isSelected() || f.isSelected()){
                 
+                //se agregan en las dos opciones posibles a seleccionar
                 if (m.isSelected()) {
                     Jugador jugadorM = new Jugador(txtNombre.getText(), 
                             "M", true);
@@ -240,6 +243,7 @@ public class PantallaInicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        //saliendo del programa
         JOptionPane.showMessageDialog(null,"Muchas gracias "
                 + "por jugar!","Saliendo....",
                 JOptionPane.INFORMATION_MESSAGE);
@@ -250,7 +254,9 @@ public class PantallaInicio extends javax.swing.JFrame {
     private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
         
         Jugador ultimoJugador = listaJugadores.obtenerUltimoJugadorSesion();
-
+        //se obtiene el ultimo jugador para validar que exista uno
+        //ya que no se puede iniciar el juego sin un jugador
+        //esto a la hora de asignar las puntuaciones
         if (ultimoJugador.getIdentificado() == null) 
         {
             JOptionPane.showMessageDialog(null, 
@@ -275,7 +281,8 @@ public class PantallaInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void bttn_puntuacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttn_puntuacionesActionPerformed
-        Puntuaciones mostrar_puntuaciones = new Puntuaciones(listaJugadores, listaPuntuaciones); 
+        Puntuaciones mostrar_puntuaciones = new Puntuaciones(listaJugadores, 
+                listaPuntuaciones); 
         mostrar_puntuaciones.setVisible(true);
         mostrar_puntuaciones.setLocationRelativeTo(null);
         this.dispose();
