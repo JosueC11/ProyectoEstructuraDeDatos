@@ -334,38 +334,42 @@ public final class Juego extends javax.swing.JFrame {
     //metodo para para terminar la orden creada
     public void terminarOrden(){
       
-        //llamr al metodo para revisar si la orden está bien
-        revisarOrden();
-        
-        //setea datos a la orden terminada y mover de espacios las otras
-        labelOrden1.setText("");
-        labelOrden1.setIcon(null);
-        
-        if(labelOrden1.getText().isBlank() && 
-          !labelOrden2.getText().isBlank()&& 
-           labelOrden3.getText().isBlank()){
+        //if para saber si hay una orden a revisar      
+        if(!labelOrden1.getText().isBlank()){
             
-            labelOrden1.setIcon(labelOrden2.getIcon());
-            labelOrden2.setIcon(null);
-            labelOrden1.setText(labelOrden2.getText());
-            labelOrden2.setText("");
-            lblHamburguesaCreando.setText(labelOrden1.getText());
+            //llamr al metodo para revisar si la orden está bien
+            revisarOrden();
+        
+            //setea datos a la orden terminada y mover de espacios las otras
+            labelOrden1.setText("");
+            labelOrden1.setIcon(null);
+        
+            if(labelOrden1.getText().isBlank() && 
+               !labelOrden2.getText().isBlank()&& 
+               labelOrden3.getText().isBlank()){
+            
+                labelOrden1.setIcon(labelOrden2.getIcon());
+                labelOrden2.setIcon(null);
+                labelOrden1.setText(labelOrden2.getText());
+                labelOrden2.setText("");
+                lblHamburguesaCreando.setText(labelOrden1.getText());
   
-        }else if(labelOrden1.getText().isBlank() && 
-                !labelOrden2.getText().isBlank() && 
-                !labelOrden3.getText().isBlank()){
+            }else if(labelOrden1.getText().isBlank() && 
+                    !labelOrden2.getText().isBlank() && 
+                    !labelOrden3.getText().isBlank()){
             
-            labelOrden1.setIcon(labelOrden2.getIcon());
-            labelOrden2.setIcon(labelOrden3.getIcon());
-            labelOrden3.setIcon(null);
-            labelOrden1.setText(labelOrden2.getText());
-            labelOrden2.setText(labelOrden3.getText());
-            labelOrden3.setText("");
-            lblHamburguesaCreando.setText(labelOrden1.getText());
-        }   
+                labelOrden1.setIcon(labelOrden2.getIcon());
+                labelOrden2.setIcon(labelOrden3.getIcon());
+                labelOrden3.setIcon(null);
+                labelOrden1.setText(labelOrden2.getText());
+                labelOrden2.setText(labelOrden3.getText());
+                labelOrden3.setText("");
+                lblHamburguesaCreando.setText(labelOrden1.getText());
+            }   
 
-        //llamar al metodo para limpiar la orden creada
-        limpiarOrdenCreada();       
+            //llamar al metodo para limpiar la orden creada
+            limpiarOrdenCreada(); 
+        }
     }
     
     //metodo para limpiar la orden creada
