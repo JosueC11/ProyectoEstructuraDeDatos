@@ -1,6 +1,5 @@
 package estructuras;
 
-
 import java.io.IOException;
 import javax.sound.sampled.*;
 

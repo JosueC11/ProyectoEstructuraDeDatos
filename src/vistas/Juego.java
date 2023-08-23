@@ -19,8 +19,8 @@ public final class Juego extends javax.swing.JFrame {
     private Timer tiempoJuego;
     
     //Atributos para controlar los tiempos
-    private int centesimaOrdenes = 99, segundoOrdenes = 19;
-    private int centesimaJuego = 99, segundoJuego = 59, minutoJuego = 4;
+    private int segundoOrdenes = 19;
+    private int segundoJuego = 59, minutoJuego = 4;
     
     private int inicioOrdenes = 0;
     private int puntuacion = 0;
@@ -64,11 +64,11 @@ public final class Juego extends javax.swing.JFrame {
         generarOrdenInicio();
         
         //setear el delay y la tarea a realizar 
-        tiempoOrdenes = new Timer(1,generarOrdenes);
+        tiempoOrdenes = new Timer(1000,generarOrdenes);
         tiempoOrdenes.start(); 
         
         //setear el delay y la tarea a realizar 
-        tiempoJuego = new Timer(1,temporizadorJuego);
+        tiempoJuego = new Timer(1000,temporizadorJuego);
         tiempoJuego.start(); 
 
     }
@@ -79,20 +79,14 @@ public final class Juego extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent e) {
             
             //Actualiza los atributos
-            centesimaOrdenes --;
-            lista.agregarOrdenCola();
-            if(centesimaOrdenes == 0){
-                
-                segundoOrdenes --;
-                centesimaOrdenes = 99;
-            }
+            segundoOrdenes --;
+            
             //Si pasaron los 20 segundos agrega orden a la cola y la genera en
             //el jframe
             if(segundoOrdenes == -1){               
                 lista.agregarOrdenCola();
                 generarOrden();
-                centesimaOrdenes = 99;
-                segundoOrdenes = 1;     
+                segundoOrdenes = 19;     
             }  
         }   
     };
@@ -103,16 +97,11 @@ public final class Juego extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent e) {
             
             //Actualiza los atributos
-            centesimaJuego --;
-            if(centesimaJuego == -1){
-                
-                segundoJuego --;
-                centesimaJuego = 99;
-            }
+            segundoJuego --;
+            
             if(segundoJuego == -1){
                 
                 minutoJuego --;
-                centesimaJuego = 99;
                 segundoJuego = 59;     
             }
             //Si pasaron los 5 minutos termina el juego
@@ -129,9 +118,10 @@ public final class Juego extends javax.swing.JFrame {
     //actualiza el temporizador
     public void actualizarLabelTemporizador(){
         
+        //variable para almacenar el tiempo, si el minuto,segundo o centesima 
+        //es menor a 10 entonces agrega un cero adelante
         String tiempo = (minutoJuego <= 9? "0":"")+minutoJuego+":"+
-                (segundoJuego <= 9? "0":"")+segundoJuego+":"+
-                (centesimaJuego <= 9? "0":"")+centesimaJuego;
+                (segundoJuego <= 9? "0":"")+segundoJuego;
         
         labelTemporizador.setText(tiempo);   
     }
@@ -369,6 +359,11 @@ public final class Juego extends javax.swing.JFrame {
 
             //llamar al metodo para limpiar la orden creada
             limpiarOrdenCreada(); 
+            
+        }else{
+            
+            JOptionPane.showMessageDialog(null,
+                    "No hay ordenes para terminar");
         }
     }
     
