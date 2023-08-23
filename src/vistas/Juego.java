@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
-public final class Juego extends javax.swing.JFrame {
+public class Juego extends javax.swing.JFrame {
     
     //Inicializa las clases a utilizar 
     ListaOrdenes lista = new ListaOrdenes();    
@@ -662,7 +662,7 @@ public final class Juego extends javax.swing.JFrame {
                 Elegir1ActionPerformed(evt);
             }
         });
-        jPanel1.add(Elegir1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 600, 100, -1));
+        jPanel1.add(Elegir1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 590, 100, -1));
 
         Elegir2.setBackground(new java.awt.Color(0, 153, 153));
         Elegir2.setForeground(new java.awt.Color(255, 255, 255));
